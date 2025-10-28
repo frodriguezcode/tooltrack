@@ -1,0 +1,14 @@
+{
+  "app": { "online": "Conectado", "offline": "Sin conexión" },
+  "login": {
+    "title": "Acceso de Administrador",
+    "subtitle": "Ingresa tu PIN para continuar",
+    "placeholder": "PIN",
+    "enter": "Entrar",
+    "useDemo": "Usar PIN demo (1234)",
+    "toastMissing": { "title": "Falta PIN", "msg": "Ingresa tu PIN" },
+    "toastBad": { "title": "PIN inválido", "msg": "Intenta de nuevo" },
+    "toastOk": { "title": "Bienvenido", "msg": "Acceso concedido" }
+  },
+  "nav": { "dashboard": "Panel", "tools": "Herramientas", "employees": "Empleados", "loans": "Préstamos", "close": "Cierre" }
+}

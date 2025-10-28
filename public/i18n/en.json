@@ -1,0 +1,14 @@
+{
+  "app": { "online": "Online", "offline": "Offline" },
+  "login": {
+    "title": "Administrator Access",
+    "subtitle": "Enter your PIN to continue",
+    "placeholder": "PIN",
+    "enter": "Sign in",
+    "useDemo": "Use demo PIN (1234)",
+    "toastMissing": { "title": "PIN required", "msg": "Please type your PIN" },
+    "toastBad": { "title": "Invalid PIN", "msg": "Try again" },
+    "toastOk": { "title": "Welcome", "msg": "Access granted" }
+  },
+  "nav": { "dashboard": "Dashboard", "tools": "Tools", "employees": "Employees", "loans": "Loans", "close": "Closeout" }
+}
