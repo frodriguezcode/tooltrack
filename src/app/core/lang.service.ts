@@ -34,4 +34,33 @@ export class LangService {
   current(): 'es' | 'en' {
     return (this.t.currentLang as any) || 'es';
   }
+
+   toggle() {
+    const current = this.current();
+    const next = current === 'es' ? 'en' : 'es';
+    this.use(next);
+  }
+
+  getLanguageFlag(lang?: string): string {
+    const currentLang = lang || this.current();
+    const flags: { [key: string]: string } = {
+      'es': '🇪🇸',
+      'en': '🇺🇸'
+    };
+    return flags[currentLang] || '🌐';
+  }
+
+  getLanguageName(lang?: string): string {
+    const currentLang = lang || this.current();
+    const names: { [key: string]: string } = {
+      'es': 'Español',
+      'en': 'English'
+    };
+    return names[currentLang] || currentLang.toUpperCase();
+  }
+
+  translate(key: string, params?: any): string {
+    return this.t.instant(key, params);
+  }
+
 }

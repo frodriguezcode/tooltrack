@@ -1,14 +1,90 @@
 {
-  "app": { "online": "Conectado", "offline": "Sin conexión" },
+  "app": {
+    "online": "Conectado",
+    "offline": "Sin conexión"
+  },
   "login": {
     "title": "Acceso de Administrador",
     "subtitle": "Ingresa tu PIN para continuar",
     "placeholder": "PIN",
     "enter": "Entrar",
     "useDemo": "Usar PIN demo (1234)",
-    "toastMissing": { "title": "Falta PIN", "msg": "Ingresa tu PIN" },
-    "toastBad": { "title": "PIN inválido", "msg": "Intenta de nuevo" },
-    "toastOk": { "title": "Bienvenido", "msg": "Acceso concedido" }
+    "toastMissing": {
+      "title": "Falta PIN",
+      "msg": "Ingresa tu PIN"
+    },
+    "toastBad": {
+      "title": "PIN inválido",
+      "msg": "Intenta de nuevo"
+    },
+    "toastOk": {
+      "title": "Bienvenido",
+      "msg": "Acceso concedido"
+    }
   },
-  "nav": { "dashboard": "Panel", "tools": "Herramientas", "employees": "Empleados", "loans": "Préstamos", "close": "Cierre" }
+  "nav": {
+    "dashboard": "Panel",
+    "tools": "Herramientas",
+    "employees": "Empleados",
+    "loans": "Préstamos",
+    "close": "Cierre"
+  },
+  "dashboard": {
+    "welcome": "¡Hola",
+    "welcomeMessage": "Bienvenido a ToolTrack",
+    "logout": "Cerrar sesión",
+    "stats": {
+      "toolsOnLoan": "Herramientas en préstamo",
+      "activeEmployees": "Empleados activos",
+      "loansToday": "Préstamos hoy",
+      "pendingReturns": "Pendientes devolución"
+    },
+    "sections": {
+      "peopleManagement": "Gestión de Personas",
+      "toolsManagement": "Gestión de Herramientas",
+      "organization": "Organización",
+      "recentActivity": "Actividad Reciente"
+    },
+    "cards": {
+      "employees": {
+        "title": "Empleados",
+        "description": "Gestionar trabajadores"
+      },
+      "leaders": {
+        "title": "Líderes",
+        "description": "Administrar líderes de equipo"
+      },
+      "supervisors": {
+        "title": "Supervisores",
+        "description": "Configurar supervisores"
+      },
+      "tools": {
+        "title": "Herramientas",
+        "description": "Inventario de herramientas"
+      },
+      "loans": {
+        "title": "Préstamos",
+        "description": "Asignar y devolver"
+      },
+      "locations": {
+        "title": "Localizaciones",
+        "description": "Zonas de trabajo"
+      },
+      "teams": {
+        "title": "Equipos",
+        "description": "Organizar grupos"
+      }
+    },
+    "actions": {
+      "newLoan": "Nuevo Préstamo",
+      "registerReturn": "Registrar Devolución"
+    },
+    "activities": {
+      "loanOf": "Préstamo de",
+      "returnOf": "Devolución de",
+      "newEmployee": "Nuevo empleado registrado",
+      "alert": "Alerta: Herramienta no devuelta",
+      "system": "Sistema"
+    }
+  }
 }

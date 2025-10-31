@@ -1,14 +1,90 @@
 {
-  "app": { "online": "Online", "offline": "Offline" },
+  "app": {
+    "online": "Online",
+    "offline": "Offline"
+  },
   "login": {
     "title": "Administrator Access",
     "subtitle": "Enter your PIN to continue",
     "placeholder": "PIN",
     "enter": "Sign in",
     "useDemo": "Use demo PIN (1234)",
-    "toastMissing": { "title": "PIN required", "msg": "Please type your PIN" },
-    "toastBad": { "title": "Invalid PIN", "msg": "Try again" },
-    "toastOk": { "title": "Welcome", "msg": "Access granted" }
+    "toastMissing": {
+      "title": "Missing PIN",
+      "msg": "Please type your PIN"
+    },
+    "toastBad": {
+      "title": "Invalid PIN",
+      "msg": "Try again"
+    },
+    "toastOk": {
+      "title": "Welcome",
+      "msg": "Access granted"
+    }
   },
-  "nav": { "dashboard": "Dashboard", "tools": "Tools", "employees": "Employees", "loans": "Loans", "close": "Closeout" }
+  "nav": {
+    "dashboard": "Dashboard",
+    "tools": "Tools",
+    "employees": "Employees",
+    "loans": "Loans",
+    "close": "Closeout"
+  },
+  "dashboard": {
+    "welcome": "Hello",
+    "welcomeMessage": "Welcome to ToolTrack",
+    "logout": "Logout",
+    "stats": {
+      "toolsOnLoan": "Tools on loan",
+      "activeEmployees": "Active employees",
+      "loansToday": "Loans today",
+      "pendingReturns": "Pending returns"
+    },
+    "sections": {
+      "peopleManagement": "People Management",
+      "toolsManagement": "Tools Management",
+      "organization": "Organization",
+      "recentActivity": "Recent Activity"
+    },
+    "cards": {
+      "employees": {
+        "title": "Employees",
+        "description": "Manage workers"
+      },
+      "leaders": {
+        "title": "Leaders",
+        "description": "Manage team leaders"
+      },
+      "supervisors": {
+        "title": "Supervisors",
+        "description": "Configure supervisors"
+      },
+      "tools": {
+        "title": "Tools",
+        "description": "Tool inventory"
+      },
+      "loans": {
+        "title": "Loans",
+        "description": "Assign and return"
+      },
+      "locations": {
+        "title": "Locations",
+        "description": "Work zones"
+      },
+      "teams": {
+        "title": "Teams",
+        "description": "Organize groups"
+      }
+    },
+    "actions": {
+      "newLoan": "New Loan",
+      "registerReturn": "Register Return"
+    },
+    "activities": {
+      "loanOf": "Loan of",
+      "returnOf": "Return of",
+      "newEmployee": "New employee registered",
+      "alert": "Alert: Tool not returned",
+      "system": "System"
+    }
+  }
 }
