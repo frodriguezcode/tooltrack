@@ -14,9 +14,36 @@ import { RippleModule } from 'primeng/ripple';
 import { TimelineModule } from 'primeng/timeline';
 import { TooltipModule } from 'primeng/tooltip';
 
+// Font Awesome
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  faTools,
+  faHardHat,
+  faClock,
+  faExclamationTriangle,
+  faUserTie,
+  faUserShield,
+  faUserCheck,
+  faToolbox,
+  faExchangeAlt,
+  faMapMarkedAlt,
+  faUsersCog,
+  faHandHolding,
+  faUndo,
+  faUserPlus,
+  faBell,
+  faLanguage,
+  faSignOutAlt,
+  faPlusCircle,
+  faCheckCircle,
+  faUsers,
+  faHistory,
+  faChevronRight
+} from '@fortawesome/free-solid-svg-icons';
+
 interface DashboardCard {
   titleKey: string;
-  icon: string;
+  icon: any;
   route: string;
   color: string;
   descriptionKey: string;
@@ -25,7 +52,7 @@ interface DashboardCard {
 interface QuickStat {
   labelKey: string;
   value: number;
-  icon: string;
+  icon: any;
   color: string;
   trend?: string;
 }
@@ -34,7 +61,7 @@ interface Activity {
   actionKey: string;
   user: string;
   time: string;
-  icon: string;
+  icon: any;
   color: string;
 }
 
@@ -51,41 +78,54 @@ interface Activity {
     RippleModule,
     TimelineModule,
     TooltipModule,
-    TranslateModule
+    TranslateModule,
+    FontAwesomeModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   userName: string = 'Supervisor';
+
+  // Iconos Font Awesome
+  faLanguage = faLanguage;
+  faBell = faBell;
+  faSignOutAlt = faSignOutAlt;
+  faUsers = faUsers;
+  faTools = faTools;
+  faMapMarkedAlt = faMapMarkedAlt;
+  faHistory = faHistory;
+  faPlusCircle = faPlusCircle;
+  faCheckCircle = faCheckCircle;
+  faChevronRight = faChevronRight;
   
   quickStats: QuickStat[] = [
     {
       labelKey: 'dashboard.stats.toolsOnLoan',
       value: 24,
-      icon: 'pi pi-wrench',
-      color: '#3B82F6',
+      icon: faTools,
+      color: '#718096',
       trend: '+5'
     },
     {
       labelKey: 'dashboard.stats.activeEmployees',
       value: 48,
-      icon: 'pi pi-users',
-      color: '#10B981',
+      icon: faHardHat,
+      color: '#718096',
       trend: '+2'
     },
     {
       labelKey: 'dashboard.stats.loansToday',
       value: 12,
-      icon: 'pi pi-clock',
-      color: '#F59E0B',
+      icon: faClock,
+      color: '#718096',
       trend: '+8'
     },
     {
       labelKey: 'dashboard.stats.pendingReturns',
       value: 5,
-      icon: 'pi pi-exclamation-circle',
-      color: '#EF4444',
+      icon: faExclamationTriangle,
+      color: '#718096',
       trend: '-2'
     }
   ];
@@ -93,23 +133,23 @@ export class DashboardComponent implements OnInit {
   peopleCards: DashboardCard[] = [
     {
       titleKey: 'dashboard.cards.employees.title',
-      icon: 'pi pi-users',
+      icon: faUserTie,
       route: '/employees',
-      color: '#3B82F6',
+      color: '#718096',
       descriptionKey: 'dashboard.cards.employees.description'
     },
     {
       titleKey: 'dashboard.cards.leaders.title',
-      icon: 'pi pi-star',
+      icon: faUserShield,
       route: '/employees',
-      color: '#8B5CF6',
+      color: '#718096',
       descriptionKey: 'dashboard.cards.leaders.description'
     },
     {
       titleKey: 'dashboard.cards.supervisors.title',
-      icon: 'pi pi-shield',
+      icon: faUserCheck,
       route: '/employees',
-      color: '#EC4899',
+      color: '#718096',
       descriptionKey: 'dashboard.cards.supervisors.description'
     }
   ];
@@ -117,16 +157,16 @@ export class DashboardComponent implements OnInit {
   toolCards: DashboardCard[] = [
     {
       titleKey: 'dashboard.cards.tools.title',
-      icon: 'pi pi-wrench',
+      icon: faToolbox,
       route: '/tools',
-      color: '#10B981',
+      color: '#718096',
       descriptionKey: 'dashboard.cards.tools.description'
     },
     {
       titleKey: 'dashboard.cards.loans.title',
-      icon: 'pi pi-arrow-right-arrow-left',
+      icon: faExchangeAlt,
       route: '/loans',
-      color: '#F59E0B',
+      color: '#718096',
       descriptionKey: 'dashboard.cards.loans.description'
     }
   ];
@@ -134,16 +174,16 @@ export class DashboardComponent implements OnInit {
   locationCards: DashboardCard[] = [
     {
       titleKey: 'dashboard.cards.locations.title',
-      icon: 'pi pi-map-marker',
+      icon: faMapMarkedAlt,
       route: '/locations',
-      color: '#06B6D4',
+      color: '#718096',
       descriptionKey: 'dashboard.cards.locations.description'
     },
     {
       titleKey: 'dashboard.cards.teams.title',
-      icon: 'pi pi-sitemap',
+      icon: faUsersCog,
       route: '/teams',
-      color: '#84CC16',
+      color: '#718096',
       descriptionKey: 'dashboard.cards.teams.description'
     }
   ];
@@ -153,29 +193,29 @@ export class DashboardComponent implements OnInit {
       actionKey: 'dashboard.activities.loanOf',
       user: 'Juan Pérez - Martillo #045',
       time: 'Hace 5 min',
-      icon: 'pi pi-arrow-right',
-      color: '#10B981'
+      icon: faHandHolding,
+      color: '#718096'
     },
     {
       actionKey: 'dashboard.activities.returnOf',
       user: 'María López - Taladro #023',
       time: 'Hace 15 min',
-      icon: 'pi pi-arrow-left',
-      color: '#3B82F6'
+      icon: faUndo,
+      color: '#718096'
     },
     {
       actionKey: 'dashboard.activities.newEmployee',
       user: 'Carlos Ruiz',
       time: 'Hace 1 hora',
-      icon: 'pi pi-user-plus',
-      color: '#8B5CF6'
+      icon: faUserPlus,
+      color: '#718096'
     },
     {
       actionKey: 'dashboard.activities.alert',
       user: 'Sistema',
       time: 'Hace 2 horas',
-      icon: 'pi pi-exclamation-triangle',
-      color: '#EF4444'
+      icon: faBell,
+      color: '#718096'
     }
   ];
 

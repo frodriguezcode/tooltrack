@@ -20,6 +20,10 @@
     "toastOk": {
       "title": "Bienvenido",
       "msg": "Acceso concedido"
+    },
+    "demo": {
+      "title": "PIN Demo",
+      "msg": "Usando PIN de demostración"
     }
   },
   "nav": {

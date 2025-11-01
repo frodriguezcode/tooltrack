@@ -1,12 +1,8 @@
-<p-toast></p-toast>
-
 <div class="auth-wrapper">
-  <p-card
+  <p-card 
     [header]="'login.title' | translate"
     [subheader]="'login.subtitle' | translate"
-    [style]="{ width: '360px'}"
-    styleClass="p-shadow-6"
-  >
+    styleClass="p-shadow-6">
     <form (ngSubmit)="submit()">
       <div class="field">
         <span class="p-input-icon-left w-full">
@@ -15,11 +11,10 @@
             pInputText
             type="password"
             maxlength="6"
-           
             autocomplete="off"
             autocorrect="off"
             spellcheck="false"
-            placeholder="PIN"
+            [placeholder]="'login.placeholder' | translate"
             [(ngModel)]="pin"
             name="pin"
             class="w-full"
@@ -30,12 +25,11 @@
       <button
         pButton
         type="submit"
-       
         class="w-full mt-2"
         [loading]="loading"
         [label]="'login.enter' | translate"
-
       ></button>
+
       <button
         pButton
         type="button"
@@ -47,13 +41,14 @@
       <div
         class="status mt-3"
         [class.online]="online"
-        [class.offline]="!online"
-      >
-        <!-- <i class="pi" [ngClass]="online ? 'pi-wifi' : 'pi-wifi-off'"></i> -->
+        [class.offline]="!online">
+        <i [class]="online ? 'pi pi-wifi' : 'pi pi-wifi-off'"></i>
         <span [class.online]="online" [class.offline]="!online">
-          {{ online ? ('login.online' | translate) : ('login.offline' | translate) }}
+          {{ (online ? 'app.online' : 'app.offline') | translate }}
         </span>
       </div>
     </form>
   </p-card>
 </div>
+
+<p-toast></p-toast>
