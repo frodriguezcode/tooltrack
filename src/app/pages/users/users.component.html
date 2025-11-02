@@ -5,18 +5,25 @@
     <p-table *ngIf="users.length>0" [value]="users" [tableStyle]="{ 'min-width': '50rem','margin-top':'5px' }">
         <ng-template #header>
             <tr>
+                <th>Edit</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Rol</th>
-                <th>Pin</th>
+                <th>Status</th>
             </tr>
         </ng-template>
         <ng-template #body let-user>
             <tr>
+                <td><p-button (onClick)="editUser(user)" label="Edit" severity="info" /></td>
                 <td>{{user.first_name}}</td>
                 <td>{{user.last_name}}</td>
-                <td>{{user.id_role}}</td>
-                <td>{{user.pin}}</td>
+                <td>{{getRoleUser(user.id_role)}}</td>
+                <td *ngIf="user.status==true"><p-button 
+                 (onClick)="updateStatusUser(user)"   
+                label="deactivate" severity="danger" /></td>
+                <td *ngIf="user.status==false"><p-button
+                 (onClick)="updateStatusUser(user)"   
+                label="activate" severity="success" /></td>   
       
             </tr>
         </ng-template>
@@ -25,7 +32,7 @@
 
 
 
-<p-dialog header="Create User" [modal]="true" [(visible)]="visibleCreateUser" [style]="{ width: '30rem' }">
+<p-dialog header="{{titleDialog}}" [modal]="true" [(visible)]="visibleCreateUser" [style]="{ width: '30rem' }">
 
     <div class="form-grid">
         <form *ngIf="UsuarioForm" [formGroup]="UsuarioForm">
@@ -63,6 +70,7 @@
     </div>
 
     <div class="flex justify-end gap-2 mt-6">
-        <p-button [disabled]="UsuarioForm.invalid" label="Save" (click)="saveUser();visibleCreateUser = false"></p-button>
+        <p-button *ngIf="!editingUser" [disabled]="UsuarioForm.invalid" label="Save" (click)="saveUser();visibleCreateUser = false"></p-button>
+        <p-button *ngIf="editingUser" [disabled]="UsuarioForm.invalid" label="Save changes" (click)="updateUser();visibleCreateUser = false"></p-button>
     </div>
 </p-dialog>

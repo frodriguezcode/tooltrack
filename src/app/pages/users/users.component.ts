@@ -23,6 +23,8 @@ import { AuthPinService } from '../../core/auth-pin.service';
 })
 export class UsersComponent implements OnInit {
  showPin = false;
+ editingUser= false
+ titleDialog:string=''
  UsuarioForm!:FormGroup
  users:any=[]
  Date:any= new Date();
@@ -59,18 +61,23 @@ visibleCreateUser: boolean = false;
     })
  }
 
+ getRoleUser(idRol:any){
+  return this.role_list.find((role:any)=>role.id_rol==idRol).name
+ }
+
   showCreateUser() {
+    this.titleDialog='Create User'
     this.visibleCreateUser = true;
   }
 
   getUsers(){
     this.auth.getUsers().then((resp:any)=>{
-          console.log('resp',resp)
+     
           this.users=resp
     })
   }
   saveUser(){
-    console.log('UsuarioForm',this.UsuarioForm.value)
+  
     this.auth.saveUser(this.UsuarioForm.value).then((resp:any)=>{
       
     })
@@ -79,6 +86,42 @@ visibleCreateUser: boolean = false;
 
   changePin() {
       this.showPin = !this.showPin;
+  }
+
+  updateStatusUser(user:any){
+    
+    user.status=!user.status
+    this.auth.updateStatusUser(user.id,user.status)
+  }
+
+  editUser(user:any){
+    this.titleDialog='Edit User'
+    this.UsuarioForm = new FormGroup({
+      first_name: new FormControl(user.first_name,[Validators.required]), 
+      last_name: new FormControl(user.last_name,[Validators.required]), 
+      status: new FormControl(user.status), 
+      pin: new FormControl(user.pin,[Validators.required]), 
+      id_role: new FormControl(user.id_role,[Validators.required]), 
+      register_date: new FormControl(user.register_date),
+      id: new FormControl(user.id)
+    })
+    this.editingUser=true
+    this.visibleCreateUser=true
+  }
+
+  updateUser(){
+  console.log('UsuarioForm',this.UsuarioForm.value)
+  this.auth.updateUser(this.UsuarioForm.value).then(resp=>{
+    let userEdit=this.UsuarioForm.value
+     const index = this.users.findIndex((user: any) => user.id === userEdit.id);
+     if (index !== -1) {
+      this.users[index].first_name = userEdit.first_name
+      this.users[index].last_name = userEdit.last_name
+      this.users[index].pin = userEdit.pin
+      this.users[index].id_role = userEdit.id_role
+     }
+  })
+
   }
 
 

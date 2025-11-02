@@ -1,6 +1,8 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Firestore, collection, addDoc,getDocs } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, getDocs } from '@angular/fire/firestore';
+import { doc, getDoc, query, updateDoc, where } from 'firebase/firestore';
+
 
 const STORAGE_KEY = 'tooltrack_is_admin';
 const ADMIN_PIN = '1234'; // Puedes cambiarlo más adelante
@@ -9,8 +11,8 @@ const ADMIN_PIN = '1234'; // Puedes cambiarlo más adelante
   providedIn: 'root'
 })
 export class AuthPinService {
-private firestore: Firestore = inject(Firestore);
-  constructor() {}
+  private firestore: Firestore = inject(Firestore);
+  constructor() { }
 
   // Creamos una señal reactiva para saber si está logueado
   isLoggedIn = signal<boolean>(localStorage.getItem(STORAGE_KEY) === '1');
@@ -36,9 +38,9 @@ private firestore: Firestore = inject(Firestore);
     try {
       // addDoc genera automáticamente un ID
       const docRef = await addDoc(collection(this.firestore, 'users_app'), user);
-      
+
       console.log('Documento creado con ID:', docRef.id);
-      
+
       return {
         id: docRef.id,
         ...user
@@ -50,16 +52,16 @@ private firestore: Firestore = inject(Firestore);
   }
 
 
-    async getUsers() {
+  async getUsers() {
     try {
       const coleccionRef = collection(this.firestore, 'users_app');
       const snapshot = await getDocs(coleccionRef);
-      
+
       const datos = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       }));
-      
+
       return datos;
     } catch (error) {
       console.error('Error al obtener documentos:', error);
@@ -67,6 +69,50 @@ private firestore: Firestore = inject(Firestore);
     }
   }
 
+  async getUserByPin(pin: string): Promise<any | null> {
+    try {
+      const coleccionRef = collection(this.firestore, 'users_app');
+      const q = query(coleccionRef, where('pin', '==', pin));
+      const snapshot = await getDocs(q);
+      
+      if (!snapshot.empty) {
+        const doc = snapshot.docs[0];
+        return {
+          id: doc.id,
+          ...doc.data()
+        };
+      }
+      
+      return null;
+    } catch (error) {
+      console.error('Error al buscar usuario por PIN:', error);
+      throw error;
+    }
+  }
+
+
+  async updateStatusUser(id: string, status: boolean) {
+    const docRef = doc(this.firestore, 'users_app', id);
+
+    await updateDoc(docRef, {
+      status: status,
+
+    });
+  }
+
+  async updateUser(user: any) {
+    try {
+      let id = user.id
+      const docRef = doc(this.firestore, 'users_app', user.id);
+      await updateDoc(docRef, user);
+
+      console.log('Documento actualizado con ID:', user.id);
+      return { id, ...user };
+    } catch (error) {
+      console.error('Error al actualizar:', error);
+      throw error;
+    }
+  }
 
 
 }

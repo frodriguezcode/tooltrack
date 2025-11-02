@@ -63,34 +63,46 @@ export class LoginComponent implements OnInit, OnDestroy {
     window.removeEventListener('offline', this._onOffline);
   }
 
+  signByPin(){
+
+  }
+
   submit() {
-    if (!this.pin) {
-      this.msg.add({
-        severity: 'warn',
-        summary: this.translate.instant('login.toastMissing.title'),
-        detail: this.translate.instant('login.toastMissing.msg')
-      });
-      return;
-    }
+    this.auth.getUserByPin(this.pin).then((resp:any)=>{
 
-    this.loading = true;
-    const ok = this.auth.login(this.pin);
-    this.loading = false;
+      console.log('resp',resp)
+      if (resp==null) {
+        this.msg.add({
+          severity: 'warn',
+          summary: this.translate.instant('login.toastMissing.title'),
+          detail: this.translate.instant('login.toastMissing.msg')
+        });
+        return;
+      }
+  
+      this.loading = true;
+      const ok = this.auth.login(this.pin);
+      this.loading = false;
+  
+      if (resp) {
+      localStorage.setItem('userToolTrackApp', JSON.stringify(resp)); 
 
-    if (ok) {
-      this.msg.add({
-        severity: 'success',
-        summary: this.translate.instant('login.toastOk.title'),
-        detail: this.translate.instant('login.toastOk.msg')
-      });
-      this.router.navigateByUrl('/dashboard');
-    } else {
-      this.msg.add({
-        severity: 'error',
-        summary: this.translate.instant('login.toastBad.title'),
-        detail: this.translate.instant('login.toastBad.msg')
-      });
-    }
+        this.msg.add({
+          severity: 'success',
+          summary: this.translate.instant('login.toastOk.title'),
+          detail: this.translate.instant('login.toastOk.msg')
+        });
+
+        this.router.navigateByUrl('/dashboard');
+      } else {
+        this.msg.add({
+          severity: 'error',
+          summary: this.translate.instant('login.toastBad.title'),
+          detail: this.translate.instant('login.toastBad.msg')
+        });
+      }
+    })
+
   }
 
   useDemo() {
