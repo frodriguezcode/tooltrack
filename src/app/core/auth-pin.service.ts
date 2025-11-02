@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Firestore, collection, doc, setDoc, collectionData, query, where, getDocs } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 
 const STORAGE_KEY = 'tooltrack_is_admin';
@@ -10,7 +11,7 @@ const ADMIN_PIN = '1234'; // Puedes cambiarlo más adelante
 })
 export class AuthPinService {
 
-  constructor(private afs: AngularFirestore) { }
+  constructor(private firestore: Firestore) {}
 
   // Creamos una señal reactiva para saber si está logueado
   isLoggedIn = signal<boolean>(localStorage.getItem(STORAGE_KEY) === '1');
@@ -28,9 +29,25 @@ export class AuthPinService {
     localStorage.removeItem(STORAGE_KEY);
     this.isLoggedIn.set(false);
   }
-
-  // 👇 Esta función es la que falta en tu servicio
   check() {
     return this.isLoggedIn();
   }
+
+  async saveUser(user: any): Promise<string> {
+    const id = doc(collection(this.firestore, 'users_app')).id;
+    const ref = doc(this.firestore, `users_app/${id}`);
+    await setDoc(ref, { ...user, id });
+    return id;
+  }
+
+getUsers(): Observable<any[]> {
+  return collectionData(
+    collection(this.firestore, 'users_app'),
+    { idField: 'id' }
+  ) as Observable<any[]>;
+}
+
+
+
+
 }

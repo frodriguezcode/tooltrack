@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { Dialog } from 'primeng/dialog';
@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { SelectModule } from 'primeng/select';
+import { AuthPinService } from '../../core/auth-pin.service';
 
 @Component({
   selector: 'app-users',
@@ -29,8 +30,10 @@ export class UsersComponent implements OnInit {
  role_list:any=[]
  role_selected:string=''
 visibleCreateUser: boolean = false;
- constructor(private datePipe: DatePipe){}
+ constructor(private datePipe: DatePipe, private auth: AuthPinService,){}
+
  ngOnInit(): void {
+  this.getUsers()
   this.role_list.push(
     {
     id_rol:'1',
@@ -60,8 +63,23 @@ visibleCreateUser: boolean = false;
     this.visibleCreateUser = true;
   }
 
+  getUsers(){
+    this.auth.getUsers().subscribe((user:any)=>{
+      this.users=user
+      console.log('users',this.users)
+    })
+  }
   saveUser(){
     console.log('UsuarioForm',this.UsuarioForm.value)
+    this.auth.saveUser(this.UsuarioForm.value).then(resp=>{
+      console.log('resp',resp)
+      this.visibleCreateUser=false
+      this.UsuarioForm.get('firs_name')?.setValue('');
+      this.UsuarioForm.get('last_name')?.setValue('');
+      this.UsuarioForm.get('pin')?.setValue('');
+      this.UsuarioForm.get('id_role')?.setValue('');
+
+    })
   }
 
   changePin() {
