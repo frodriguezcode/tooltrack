@@ -139,6 +139,13 @@ export class DashboardComponent implements OnInit {
       descriptionKey: 'dashboard.cards.employees.description'
     },
     {
+      titleKey: 'dashboard.cards.employees.title',
+      icon: faUserTie,
+      route: '/users',
+      color: '#718096',
+      descriptionKey: 'dashboard.cards.employees.description'
+    },
+    {
       titleKey: 'dashboard.cards.leaders.title',
       icon: faUserShield,
       route: '/employees',

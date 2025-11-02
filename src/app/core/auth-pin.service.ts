@@ -1,14 +1,6 @@
 import { Injectable, signal } from '@angular/core';
-import {
-  Firestore,
-  collection,
-  addDoc,
-  doc,
-  updateDoc,
-  query, where, getDocs,
-  writeBatch
-} from '@angular/fire/firestore';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+
 
 const STORAGE_KEY = 'tooltrack_is_admin';
 const ADMIN_PIN = '1234'; // Puedes cambiarlo más adelante
@@ -18,7 +10,7 @@ const ADMIN_PIN = '1234'; // Puedes cambiarlo más adelante
 })
 export class AuthPinService {
 
-  constructor() { }
+  constructor(private afs: AngularFirestore) { }
 
   // Creamos una señal reactiva para saber si está logueado
   isLoggedIn = signal<boolean>(localStorage.getItem(STORAGE_KEY) === '1');

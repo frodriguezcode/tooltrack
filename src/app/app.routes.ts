@@ -6,6 +6,7 @@ import { EmployeesComponent } from './pages/employees/employees.component';
 import { LoansComponent } from './pages/loans/loans.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ToolsComponent } from './pages/tools/tools.component';
+import { UsersComponent } from './pages/users/users.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent},
@@ -13,6 +14,7 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
   { path: 'tools', component: ToolsComponent, canActivate: [authGuard] },
   { path: 'employees', component: EmployeesComponent, canActivate: [authGuard] },
+  { path: 'users', component: UsersComponent, canActivate: [authGuard] },
   { path: 'loans', component: LoansComponent, canActivate: [authGuard] },
   { path: 'close', component: CloseComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'login' }
