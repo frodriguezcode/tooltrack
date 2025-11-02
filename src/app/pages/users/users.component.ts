@@ -64,22 +64,11 @@ visibleCreateUser: boolean = false;
   }
 
   getUsers(){
-    this.auth.getUsers().subscribe((user:any)=>{
-      this.users=user
-      console.log('users',this.users)
-    })
+
   }
   saveUser(){
     console.log('UsuarioForm',this.UsuarioForm.value)
-    this.auth.saveUser(this.UsuarioForm.value).then(resp=>{
-      console.log('resp',resp)
-      this.visibleCreateUser=false
-      this.UsuarioForm.get('firs_name')?.setValue('');
-      this.UsuarioForm.get('last_name')?.setValue('');
-      this.UsuarioForm.get('pin')?.setValue('');
-      this.UsuarioForm.get('id_role')?.setValue('');
 
-    })
   }
 
   changePin() {
