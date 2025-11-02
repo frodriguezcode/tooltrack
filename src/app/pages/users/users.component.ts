@@ -50,7 +50,7 @@ visibleCreateUser: boolean = false;
     
     )
     this.UsuarioForm = new FormGroup({
-      firs_name: new FormControl('',[Validators.required]), 
+      first_name: new FormControl('',[Validators.required]), 
       last_name: new FormControl('',[Validators.required]), 
       status: new FormControl(true), 
       pin: new FormControl('',[Validators.required]), 
@@ -64,10 +64,16 @@ visibleCreateUser: boolean = false;
   }
 
   getUsers(){
-
+    this.auth.getUsers().then((resp:any)=>{
+          console.log('resp',resp)
+          this.users=resp
+    })
   }
   saveUser(){
     console.log('UsuarioForm',this.UsuarioForm.value)
+    this.auth.saveUser(this.UsuarioForm.value).then((resp:any)=>{
+      
+    })
 
   }
 

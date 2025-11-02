@@ -1,6 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
-
+import { Firestore, collection, addDoc,getDocs } from '@angular/fire/firestore';
 
 const STORAGE_KEY = 'tooltrack_is_admin';
 const ADMIN_PIN = '1234'; // Puedes cambiarlo más adelante
@@ -9,7 +9,7 @@ const ADMIN_PIN = '1234'; // Puedes cambiarlo más adelante
   providedIn: 'root'
 })
 export class AuthPinService {
-
+private firestore: Firestore = inject(Firestore);
   constructor() {}
 
   // Creamos una señal reactiva para saber si está logueado
@@ -32,8 +32,40 @@ export class AuthPinService {
     return this.isLoggedIn();
   }
 
+  async saveUser(user: any) {
+    try {
+      // addDoc genera automáticamente un ID
+      const docRef = await addDoc(collection(this.firestore, 'users_app'), user);
+      
+      console.log('Documento creado con ID:', docRef.id);
+      
+      return {
+        id: docRef.id,
+        ...user
+      };
+    } catch (error) {
+      console.error('Error al crear documento:', error);
+      throw error;
+    }
+  }
 
 
+    async getUsers() {
+    try {
+      const coleccionRef = collection(this.firestore, 'users_app');
+      const snapshot = await getDocs(coleccionRef);
+      
+      const datos = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      
+      return datos;
+    } catch (error) {
+      console.error('Error al obtener documentos:', error);
+      throw error;
+    }
+  }
 
 
 

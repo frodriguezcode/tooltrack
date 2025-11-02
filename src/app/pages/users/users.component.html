@@ -2,21 +2,22 @@
     <p-button 
     class=""
     (click)="showCreateUser()" label="Create User" severity="success" />
-    <p-table [value]="users" [tableStyle]="{ 'min-width': '50rem','margin-top':'5px' }">
+    <p-table *ngIf="users.length>0" [value]="users" [tableStyle]="{ 'min-width': '50rem','margin-top':'5px' }">
         <ng-template #header>
             <tr>
-                <th>Code</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Quantity</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Rol</th>
+                <th>Pin</th>
             </tr>
         </ng-template>
         <ng-template #body let-user>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{user.first_name}}</td>
+                <td>{{user.last_name}}</td>
+                <td>{{user.id_role}}</td>
+                <td>{{user.pin}}</td>
+      
             </tr>
         </ng-template>
     </p-table>
@@ -31,7 +32,7 @@
             <br>
             <div class="form-row">
                 <label for="firstName">First Name</label>
-                <input formControlName="firs_name" pInputText id="firstName" autocomplete="off" />
+                <input formControlName="first_name" pInputText id="firstName" autocomplete="off" />
             </div>
             <br>
             <div class="form-row">
