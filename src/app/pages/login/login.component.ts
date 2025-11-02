@@ -73,7 +73,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       console.log('resp',resp)
       if (resp==null) {
         this.msg.add({
-          severity: 'warn',
+          severity: 'error',
           summary: this.translate.instant('login.toastMissing.title'),
           detail: this.translate.instant('login.toastMissing.msg')
         });
