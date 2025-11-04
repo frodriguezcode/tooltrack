@@ -31,6 +31,8 @@ export class UsersComponent implements OnInit {
  icon!: IconProp;
  role_list:any=[]
  role_selected:string=''
+ pin_list:any=[]
+ duplicate_pin:boolean=false
 visibleCreateUser: boolean = false;
  constructor(private datePipe: DatePipe, private auth: AuthPinService,){}
 
@@ -72,14 +74,22 @@ visibleCreateUser: boolean = false;
 
   getUsers(){
     this.auth.getUsers().then((resp:any)=>{
-     
           this.users=resp
+     this.pin_list=this.users.map((user:any)=>user.pin)     
     })
+  }
+  verifyPin(){
+    this.duplicate_pin=
+    (this.pin_list.filter((pin:any)=>pin== this.UsuarioForm.get('pin')?.value)).length>0? true:false
+
+
   }
   saveUser(){
   
     this.auth.saveUser(this.UsuarioForm.value).then((resp:any)=>{
-      
+        this.UsuarioForm.get('first_name')?.setValue('');
+        this.UsuarioForm.get('last_name')?.setValue('');
+        this.UsuarioForm.get('pin')?.setValue('');
     })
 
   }

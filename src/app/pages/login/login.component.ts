@@ -51,6 +51,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Inicializar idioma
+    localStorage.removeItem('userToolTrackApp');
+
     this.langService.init();
     
     // Listeners de online/offline
@@ -69,8 +71,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   submit() {
     this.auth.getUserByPin(this.pin).then((resp:any)=>{
-
-      console.log('resp',resp)
       if (resp==null) {
         this.msg.add({
           severity: 'error',
