@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
@@ -71,13 +71,15 @@ interface Activity {
     RippleModule,
     TranslateModule,
     FontAwesomeModule,
-    AppHeaderComponent 
+    AppHeaderComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  userName: string = 'Supervisor';
+  
+  // ✅ Control de botones flotantes
+  showFloatingButtons: boolean = false;
 
   // Iconos Font Awesome
   faUsers = faUsers;
@@ -220,7 +222,7 @@ export class DashboardComponent implements OnInit {
     public langService: LangService,
     private library: FaIconLibrary
   ) {
-    // ✅ Pre-cargar todos los iconos en el constructor
+    // Pre-cargar todos los iconos
     this.library.addIcons(
       faTools,
       faHardHat,
@@ -246,14 +248,20 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Inicializar el idioma
     this.langService.init();
-    // Cargar datos del dashboard
     this.loadDashboardData();
   }
 
+@HostListener('window:scroll', ['$event'])
+onWindowScroll() {
+  const scrollPosition = window.pageYOffset + window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+  const nearBottom = documentHeight - scrollPosition < 200;
+  
+  this.showFloatingButtons = !nearBottom;
+}
+
   loadDashboardData(): void {
-    // TODO: Implementar carga de datos desde Firestore
     console.log('Loading dashboard data...');
   }
 

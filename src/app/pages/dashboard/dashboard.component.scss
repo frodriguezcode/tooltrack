@@ -49,8 +49,11 @@ $border-radius-lg: 12px;
 
 $shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 $shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
 $transition-base: 200ms ease;
+$transition-slow: 300ms ease;
 
 $breakpoint-md: 768px;
 $breakpoint-lg: 1024px;
@@ -61,6 +64,7 @@ $breakpoint-lg: 1024px;
   min-height: 100vh;
   background: $gray-100;
   padding: 0;
+  position: relative; // ✅ Para los botones flotantes
 
   // Stats minimalistas
   .quick-stats {
@@ -320,7 +324,7 @@ $breakpoint-lg: 1024px;
         }
       }
 
-      // Botones de acción rápida
+      // Botones de acción rápida (versión estática)
       .quick-action-buttons {
         margin-top: $spacing-6;
         display: flex;
@@ -372,7 +376,92 @@ $breakpoint-lg: 1024px;
   }
 }
 
-// Responsive
+// ===== ✅ BOTONES FLOTANTES (FAB) =====
+
+.floating-action-buttons {
+  position: fixed;
+  right: $spacing-6;
+  bottom: $spacing-6;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-4;
+  z-index: 1000;
+  
+  // Animación de entrada
+  opacity: 0;
+transform: translateY(20px) scale(0.95); // ← Antes era: translateY(100px) scale(0.8)
+  transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1); // ← Antes era: all $transition-slow
+  
+  visibility: hidden;
+  pointer-events: none;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+    visibility: visible;
+  }
+
+  .fab {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-xl;
+    border: none;
+    cursor: pointer;
+    box-shadow: $shadow-lg;
+    transition: all $transition-base;
+
+    fa-icon {
+      font-size: $font-size-2xl;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: $shadow-xl;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    // FAB Principal (New Loan)
+    &.fab-primary {
+      background: $primary;
+      color: $white;
+
+      &:hover {
+        background: $primary-dark;
+      }
+    }
+
+    // FAB Secundario (Register Return)
+    &.fab-secondary {
+      background: $white;
+      color: $primary;
+      border: 2px solid $primary;
+
+      &:hover {
+        background: $primary-lighter;
+      }
+    }
+
+    // Override de PrimeNG
+    &::ng-deep {
+      box-shadow: $shadow-lg !important;
+
+      &:hover {
+        box-shadow: $shadow-xl !important;
+      }
+    }
+  }
+}
+
+// ===== RESPONSIVE =====
+
 @media (max-width: $breakpoint-md) {
   .dashboard-container {
     .quick-stats {
@@ -402,6 +491,36 @@ $breakpoint-lg: 1024px;
 
     .dashboard-grid {
       padding: 0 $spacing-3 $spacing-6;
+
+      // Ocultar botones estáticos en mobile cuando hay FAB
+      .quick-action-buttons {
+        display: none;
+      }
     }
+  }
+
+  // FABs más pequeños en mobile
+  .floating-action-buttons {
+    right: $spacing-4;
+    bottom: $spacing-4;
+    gap: $spacing-3;
+
+    .fab {
+      width: 56px;
+      height: 56px;
+
+      fa-icon {
+        font-size: $font-size-xl;
+      }
+    }
+  }
+}
+
+// Siempre mostrar FABs en desktop cuando se scrollea
+@media (min-width: $breakpoint-md) {
+  .floating-action-buttons {
+    // Los FABs aparecen al scrollear
+    bottom: $spacing-8;
+    right: $spacing-8;
   }
 }

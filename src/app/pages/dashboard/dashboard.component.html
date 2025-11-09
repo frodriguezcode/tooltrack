@@ -1,10 +1,9 @@
 <div class="dashboard-container">
   
-  <!-- ✅ Header Compartido -->
-  <app-header 
-   >
-  </app-header>
- <br>
+  <!-- Header Compartido -->
+  <app-header></app-header>
+  <br>
+  
   <!-- Quick Stats -->
   <div class="quick-stats">
     <div 
@@ -133,7 +132,7 @@
           </div>
         </p-card>
 
-        <!-- Quick Actions Buttons -->
+        <!-- ✅ Quick Actions Buttons (Versión Original - Oculta en mobile cuando hay FAB) -->
         <div class="quick-action-buttons">
           <button 
             pButton 
@@ -152,5 +151,26 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- ✅ BOTONES FLOTANTES (FAB) - Aparecen al hacer scroll -->
+  <div class="floating-action-buttons" [class.visible]="showFloatingButtons">
+    <button 
+      pButton 
+      class="fab fab-primary"
+      pTooltip="New Loan"
+      tooltipPosition="left"
+      (click)="navigateTo('/loans')">
+      <fa-icon [icon]="faPlusCircle"></fa-icon>
+    </button>
+    
+    <button 
+      pButton 
+      class="fab fab-secondary"
+      pTooltip="Register Return"
+      tooltipPosition="left"
+      (click)="navigateTo('/loans')">
+      <fa-icon [icon]="faCheckCircle"></fa-icon>
+    </button>
   </div>
 </div>
