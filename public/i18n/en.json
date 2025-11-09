@@ -50,6 +50,10 @@
         "title": "Employees",
         "description": "Manage workers"
       },
+      "users": {
+        "title": "Users",
+        "description": "Manage users"
+      },
       "leaders": {
         "title": "Leaders",
         "description": "Manage team leaders"

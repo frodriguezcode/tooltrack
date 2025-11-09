@@ -4,18 +4,16 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { LangService } from '../../core/lang.service';
 
+// Shared Components
+import { AppHeaderComponent } from '../../shared/components/app-header/app-header.component';
+
 // PrimeNG Imports
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
-import { AvatarModule } from 'primeng/avatar';
-import { BadgeModule } from 'primeng/badge';
-import { MenuModule } from 'primeng/menu';
 import { RippleModule } from 'primeng/ripple';
-import { TimelineModule } from 'primeng/timeline';
-import { TooltipModule } from 'primeng/tooltip';
 
 // Font Awesome
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import {
   faTools,
   faHardHat,
@@ -32,8 +30,6 @@ import {
   faUndo,
   faUserPlus,
   faBell,
-  faLanguage,
-  faSignOutAlt,
   faPlusCircle,
   faCheckCircle,
   faUsers,
@@ -72,14 +68,10 @@ interface Activity {
     CommonModule,
     CardModule,
     ButtonModule,
-    AvatarModule,
-    BadgeModule,
-    MenuModule,
     RippleModule,
-    TimelineModule,
-    TooltipModule,
     TranslateModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    AppHeaderComponent 
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
@@ -88,9 +80,6 @@ export class DashboardComponent implements OnInit {
   userName: string = 'Supervisor';
 
   // Iconos Font Awesome
-  faLanguage = faLanguage;
-  faBell = faBell;
-  faSignOutAlt = faSignOutAlt;
   faUsers = faUsers;
   faTools = faTools;
   faMapMarkedAlt = faMapMarkedAlt;
@@ -139,11 +128,11 @@ export class DashboardComponent implements OnInit {
       descriptionKey: 'dashboard.cards.employees.description'
     },
     {
-      titleKey: 'dashboard.cards.employees.title',
+      titleKey: 'dashboard.cards.users.title',
       icon: faUserTie,
       route: '/users',
       color: '#718096',
-      descriptionKey: 'dashboard.cards.employees.description'
+      descriptionKey: 'dashboard.cards.users.description'
     },
     {
       titleKey: 'dashboard.cards.leaders.title',
@@ -228,8 +217,33 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private router: Router,
-    public langService: LangService
-  ) {}
+    public langService: LangService,
+    private library: FaIconLibrary
+  ) {
+    // ✅ Pre-cargar todos los iconos en el constructor
+    this.library.addIcons(
+      faTools,
+      faHardHat,
+      faClock,
+      faExclamationTriangle,
+      faUserTie,
+      faUserShield,
+      faUserCheck,
+      faToolbox,
+      faExchangeAlt,
+      faMapMarkedAlt,
+      faUsersCog,
+      faHandHolding,
+      faUndo,
+      faUserPlus,
+      faBell,
+      faPlusCircle,
+      faCheckCircle,
+      faUsers,
+      faHistory,
+      faChevronRight
+    );
+  }
 
   ngOnInit(): void {
     // Inicializar el idioma
@@ -245,15 +259,5 @@ export class DashboardComponent implements OnInit {
 
   navigateTo(route: string): void {
     this.router.navigate([route]);
-  }
-
-  logout(): void {
-    // TODO: Implementar logout completo
-    localStorage.removeItem('tooltrack_is_admin');
-    this.router.navigate(['/login']);
-  }
-
-  changeLanguage(): void {
-    this.langService.toggle();
   }
 }

@@ -29,16 +29,22 @@
               {
                 "glob": "**/*",
                 "input": "public"
-                
               }
-              
-          
             ],
             "styles": [
-              
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "stylePreprocessorOptions": {
+              "sass": {
+                "silenceDeprecations": [
+                  "mixed-decls",
+                  "color-functions",
+                  "global-builtin",
+                  "import"
+                ]
+              }
+            }
           },
           "configurations": {
             "production": {
@@ -91,11 +97,9 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               {
-                "glob": "**/*"
-                
-              },
-              "assets",
-              "i18n"
+                "glob": "**/*",
+                "input": "public"
+              }
             ],
             "styles": [
               "src/styles.scss"

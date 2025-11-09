@@ -54,6 +54,10 @@
         "title": "Empleados",
         "description": "Gestionar trabajadores"
       },
+        "users": {
+        "title": "Usuarios",
+        "description": "Gestionar usuarios"
+      },
       "leaders": {
         "title": "Líderes",
         "description": "Administrar líderes de equipo"

@@ -1,4 +1,7 @@
 <div class="card">
+     <app-header 
+>
+  </app-header>
     <p-button 
     class=""
     (click)="showCreateUser()" label="Create User" severity="success" />
@@ -32,7 +35,7 @@
 
 
 
-<p-dialog header="{{titleDialog}}" [modal]="true" [(visible)]="visibleCreateUser" [style]="{ width: '30rem' }">
+<p-dialog header="{{titleDialog}}" [modal]="true" [(visible)]="visibleCreateUser" [style]="{ width: '22rem' }">
 
     <div class="form-grid">
         <form *ngIf="UsuarioForm" [formGroup]="UsuarioForm">

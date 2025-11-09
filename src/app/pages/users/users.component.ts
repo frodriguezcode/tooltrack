@@ -8,6 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { SelectModule } from 'primeng/select';
 import { AuthPinService } from '../../core/auth-pin.service';
+import { AppHeaderComponent } from '../../shared/components/app-header/app-header.component';
 
 @Component({
   selector: 'app-users',
@@ -16,12 +17,13 @@ import { AuthPinService } from '../../core/auth-pin.service';
     InputTextModule,
     SelectModule,
     Dialog,
-    FormsModule,ReactiveFormsModule],
+    FormsModule,ReactiveFormsModule, AppHeaderComponent ],
   templateUrl: './users.component.html',
   providers: [DatePipe],
   styleUrl: './users.component.scss'
 })
 export class UsersComponent implements OnInit {
+ userName: string = 'Supervisor';
  showPin = false;
  editingUser= false
  titleDialog:string=''

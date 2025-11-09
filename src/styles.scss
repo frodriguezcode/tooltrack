@@ -1,3 +1,6 @@
+// Importar el módulo color de Sass
+@use 'sass:color';
+
 body {
   font-family: 'Inter', sans-serif;
 }
@@ -254,8 +257,9 @@ body {
     border-color: $success;
 
     &:hover {
-      background: darken($success, 8%);
-      border-color: darken($success, 8%);
+      // ✅ CORREGIDO: Usando color.adjust() en lugar de darken()
+      background: color.adjust($success, $lightness: -8%);
+      border-color: color.adjust($success, $lightness: -8%);
     }
   }
 
