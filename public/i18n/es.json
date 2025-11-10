@@ -94,5 +94,47 @@
       "alert": "Alerta: Herramienta no devuelta",
       "system": "Sistema"
     }
+    
+  },
+   "users": {
+    "title": "Gestión de Usuarios",
+    "subtitle": "Administra usuarios del sistema y permisos",
+    "createButton": "Crear Usuario",
+    "table": {
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "role": "Rol",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "tooltips": {
+      "activate": "Activar usuario",
+      "deactivate": "Desactivar usuario",
+      "edit": "Editar usuario"
+    },
+    "empty": {
+      "title": "Sin usuarios aún",
+      "message": "Crea tu primer usuario para comenzar"
+    },
+    "dialog": {
+      "create": "Crear Usuario",
+      "edit": "Editar Usuario"
+    },
+    "form": {
+      "firstName": "Nombre",
+      "firstNamePlaceholder": "Ingrese el nombre",
+      "lastName": "Apellido",
+      "lastNamePlaceholder": "Ingrese el apellido",
+      "pin": "PIN",
+      "pinPlaceholder": "Ingrese PIN de 4 dígitos",
+      "show": "Mostrar",
+      "hide": "Ocultar",
+      "pinError": "Este PIN ya está en uso. Por favor elija otro.",
+      "role": "Rol",
+      "rolePlaceholder": "Seleccione un rol",
+      "cancel": "Cancelar",
+      "create": "Crear Usuario",
+      "save": "Guardar Cambios"
+    }
   }
 }

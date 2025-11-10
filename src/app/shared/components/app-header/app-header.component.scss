@@ -162,3 +162,58 @@ $transition-base: 200ms ease;
     }
   }
 }
+
+
+
+.flag-emoji {
+  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+  font-size: 1.25rem;
+  line-height: 1;
+  display: inline-block;
+  margin-left: 0.25rem;
+}
+
+
+.icon-button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  
+  fa-icon {
+    display: inline-flex;
+  }
+  
+  .flag-emoji {
+    display: inline-flex;
+  }
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  
+  .button-icon {
+    font-size: 1rem;
+  }
+  
+  .button-text {
+    display: inline-block;
+  }
+}
+
+
+
+::ng-deep {
+  .p-badge.p-badge-success {
+    background-color: #7AC142 !important; // Verde corporativo
+  }
+}
+
+.notification-btn {
+  .bell-icon {
+    color: #7AC142 !important; // Verde corporativo
+  }
+}
+

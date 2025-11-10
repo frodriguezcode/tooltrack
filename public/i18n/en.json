@@ -90,5 +90,49 @@
       "alert": "Alert: Tool not returned",
       "system": "System"
     }
+    
+  },
+   "users": {
+    "title": "Users Management",
+    "subtitle": "Manage system users and permissions",
+    "createButton": "Create User",
+    "table": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "role": "Role",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "tooltips": {
+      "activate": "Activate user",
+      "deactivate": "Deactivate user",
+      "edit": "Edit user"
+    },
+    "empty": {
+      "title": "No users yet",
+      "message": "Create your first user to get started"
+    },
+    "dialog": {
+      "create": "Create User",
+      "edit": "Edit User"
+    },
+    "form": {
+      "firstName": "First Name",
+      "firstNamePlaceholder": "Enter first name",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Enter last name",
+      "pin": "PIN",
+      "pinPlaceholder": "Enter 4-digit PIN",
+      "show": "Show",
+      "hide": "Hide",
+      "pinError": "This PIN is already in use. Please choose another one.",
+      "role": "Role",
+      "rolePlaceholder": "Select a role",
+      "cancel": "Cancel",
+      "create": "Create User",
+      "save": "Save Changes"
+    }
   }
+
+
 }

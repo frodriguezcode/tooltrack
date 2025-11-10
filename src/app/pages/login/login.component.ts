@@ -69,41 +69,50 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   }
 
-  submit() {
-    this.auth.getUserByPin(this.pin).then((resp:any)=>{
-      if (resp==null) {
-        this.msg.add({
-          severity: 'error',
-          summary: this.translate.instant('login.toastMissing.title'),
-          detail: this.translate.instant('login.toastMissing.msg')
-        });
-        return;
-      }
-  
-      this.loading = true;
-      const ok = this.auth.login(this.pin);
-      this.loading = false;
-  
-      if (resp) {
-      localStorage.setItem('userToolTrackApp', JSON.stringify(resp)); 
+async submit() {
+  try {
+    const resp = await this.auth.getUserByPin(this.pin);
+    
+    if (resp == null) {
+      this.msg.add({
+        severity: 'error',
+        summary: this.translate.instant('login.toastMissing.title'),
+        detail: this.translate.instant('login.toastMissing.msg')
+      });
+      return;
+    }
 
-        this.msg.add({
-          severity: 'success',
-          summary: this.translate.instant('login.toastOk.title'),
-          detail: this.translate.instant('login.toastOk.msg')
-        });
+    this.loading = true;
+    
+    // ✅ USAR loginWithPin en lugar de login
+    const success = await this.auth.loginWithPin(this.pin);
+    
+    this.loading = false;
 
-        this.router.navigateByUrl('/dashboard');
-      } else {
-        this.msg.add({
-          severity: 'error',
-          summary: this.translate.instant('login.toastBad.title'),
-          detail: this.translate.instant('login.toastBad.msg')
-        });
-      }
-    })
+    if (success) {
+      this.msg.add({
+        severity: 'success',
+        summary: this.translate.instant('login.toastOk.title'),
+        detail: this.translate.instant('login.toastOk.msg')
+      });
 
+      this.router.navigateByUrl('/dashboard');
+    } else {
+      this.msg.add({
+        severity: 'error',
+        summary: this.translate.instant('login.toastBad.title'),
+        detail: this.translate.instant('login.toastBad.msg')
+      });
+    }
+  } catch (error) {
+    this.loading = false;
+    this.msg.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Error al iniciar sesión'
+    });
   }
+}
 
   useDemo() {
     this.pin = '1234';

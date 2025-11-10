@@ -27,28 +27,27 @@
       </button>
       
       <!-- Notifications Button -->
-      <button 
-        pButton 
-        type="button"
-        class="p-button-rounded p-button-text icon-button"
-        pBadge 
-        value="3" 
-        severity="danger"
-        pTooltip="Notificaciones"
-        tooltipPosition="bottom">
-        <fa-icon [icon]="faBell" [fixedWidth]="true"></fa-icon>
-      </button>
+   <button 
+  pButton 
+  type="button"
+  class="p-button-rounded p-button-text icon-button notification-btn"
+  pBadge 
+  value="3" 
+  severity="danger"
+  pTooltip="Notificaciones"
+  tooltipPosition="bottom">
+  <fa-icon [icon]="faBell" [fixedWidth]="true" class="bell-icon"></fa-icon>
+</button>
       
       <!-- Logout Button -->
-      <button 
-        pButton 
-        label="logout"
-        type="button"
-        class="p-button-rounded p-button-outlined action-button"
-        (click)="logout()">
-        <fa-icon [icon]="faSignOutAlt" [fixedWidth]="true" class="button-icon"></fa-icon>
-        <span>{{ 'dashboard.logout' | translate }}</span>
-      </button>
+ <button 
+  pButton 
+  type="button"
+  class="p-button-rounded p-button-outlined logout-btn"
+  (click)="logout()">
+  <fa-icon [icon]="faSignOutAlt"></fa-icon>
+  <span class="logout-text">{{ 'dashboard.logout' | translate }}</span>
+</button>
     </div>
   </div>
 </div>
