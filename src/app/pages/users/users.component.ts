@@ -105,6 +105,10 @@ export class UsersComponent implements OnInit {
   }
 
   showCreateUser() {
+    this.UsuarioForm.get('first_name')?.setValue('');
+    this.UsuarioForm.get('last_name')?.setValue('');
+    this.UsuarioForm.get('pin')?.setValue('');
+    this.UsuarioForm.get('id_role')?.setValue('');
      this.titleDialog = this.translate.instant('users.dialog.create');
     this.visibleCreateUser = true;
   }
@@ -157,7 +161,6 @@ export class UsersComponent implements OnInit {
   }
 
   updateUser() {
-    console.log('UsuarioForm', this.UsuarioForm.value);
     this.auth.updateUser(this.UsuarioForm.value).then((resp) => {
       let userEdit = this.UsuarioForm.value;
       const index = this.users.findIndex(

@@ -71,7 +71,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 async submit() {
   try {
+    console.log('pin',this.pin)
     const resp = await this.auth.getUserByPin(this.pin);
+    console.log('resp',resp)
     
     if (resp == null) {
       this.msg.add({

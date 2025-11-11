@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Firestore, collection, addDoc, getDocs } from '@angular/fire/firestore';
-import { doc, query, updateDoc, where } from 'firebase/firestore';
+import { BehaviorSubject, combineLatest, forkJoin, map, Observable } from 'rxjs';
+import { Firestore, collection, addDoc, getDocs, collectionData } from '@angular/fire/firestore';
+import { CollectionReference, doc, query, updateDoc, where } from 'firebase/firestore';
 
 const STORAGE_KEY = 'tooltrack_is_admin';
 const USER_STORAGE_KEY = 'userToolTrackApp';
@@ -20,6 +20,32 @@ export class AuthPinService {
     const savedUser = this.loadUserFromStorage();
     if (savedUser) this.currentUserSubject.next(savedUser);
   }
+
+
+getCatalogs() {
+  const locationsRef = collection(this.firestore, 'locations');
+  const jobsRef = collection(this.firestore, 'job_titles');
+  const usersRef = collection(this.firestore, 'users_app');
+  const employeesRef = collection(this.firestore, 'employees');
+
+  return forkJoin([
+    getDocs(locationsRef),
+    getDocs(jobsRef),
+    getDocs(usersRef),
+    getDocs(employeesRef)
+  ]).pipe(
+    map(([locSnap, jobSnap, userSnap, empSnap]) => {
+      return [
+        locSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })),
+        jobSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })),
+        userSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })),
+        empSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      ];
+    })
+  );
+}
+
+
 
   private loadUserFromStorage(): any {
     const userJson = localStorage.getItem(USER_STORAGE_KEY);
@@ -191,6 +217,36 @@ export class AuthPinService {
       const docRef = doc(this.firestore, 'tools', tool.id);
       await updateDoc(docRef, tool);
       return { id: tool.id, ...tool };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  //Employees
+
+  async saveEmployee(employee: any) {
+    try {
+      const docRef = await addDoc(collection(this.firestore, 'employees'), employee);
+      return { id: docRef.id, ...employee };
+    } catch (error) {
+      throw error;
+  }
+
+  }
+  async updateEmployee(employee: any) {
+    try {
+      const docRef = doc(this.firestore, 'employees', employee.id);
+      await updateDoc(docRef, employee);
+      return { id: employee.id, ...employee };
+    } catch (error) {
+      throw error;
+    }
+  }
+  async updateStatusEmployee(employee: any) {
+    try {
+      const docRef = doc(this.firestore, 'employees', employee.id);
+      await updateDoc(docRef, employee);
+      return { id: employee.id, ...employee };
     } catch (error) {
       throw error;
     }

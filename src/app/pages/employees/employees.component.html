@@ -1,1 +1,122 @@
-<p>employees works!</p>
+  <div class="users-container">
+  <!-- Header -->
+  <app-header></app-header>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div>
+        <h1 class="page-title">{{ 'users.title' | translate }}</h1>
+        <p class="page-subtitle">{{ 'users.subtitle' | translate }}</p>
+      </div>
+      <button pButton class="p-button-success create-btn" (click)="showCreateEmployee()">
+        <fa-icon [icon]="faUserPlus" class="btn-icon"></fa-icon>
+        <span>{{ 'users.createButton' | translate }}</span>
+      </button>
+    </div>
+  </div>
+  <!-- Employees Table -->
+  <div class="table-container" *ngIf="employees.length > 0">
+    <p-table [value]="employees" styleClass="custom-table" [tableStyle]="{'min-width': '50rem'}">
+
+      <ng-template #header>
+        <tr>
+          <th class="text-center">Full Name</th>
+          <th class="text-center">Job Title</th>
+          <th class="text-center">Location</th>
+          <th class="text-center">Leader</th>
+          <th class="text-center">Status</th>
+          <th class="text-center">Edit</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-employee>
+        <tr>
+          <td class="text-center">
+            <span class="user-name">{{employee.full_name}}</span>
+          </td>
+          <td class="text-center">
+            <span class="user-name">{{getNameJobTitle(employee.id_job_title)}}</span>
+          </td>
+          <td class="text-center">
+            <span class="user-name">{{getNameLocation(employee.id_location)}}</span>
+          </td>
+          <td class="text-center">
+            <span class="user-name">{{getNameLeader(employee.id_leader)}}</span>
+          </td>
+
+          <td class="text-center">
+            <button class="toggle-btn" [class.active]="employee.status" (click)="updateStatusEmployee(employee)"
+              [pTooltip]="employee.status ? ('users.tooltips.deactivate' | translate) : ('users.tooltips.activate' | translate)"
+              tooltipPosition="top">
+              <fa-icon [icon]="employee.status ? faToggleOn : faToggleOff" [class.text-success]="employee.status"
+                [class.text-gray]="!employee.status">
+              </fa-icon>
+            </button>
+          </td>
+          <td class="text-center">
+            <button pButton class="p-button-text p-button-sm edit-btn" (click)="editEmployee(employee)"
+              [pTooltip]="'users.tooltips.edit' | translate" tooltipPosition="top">
+              <fa-icon [icon]="faEdit"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  </div>
+  
+
+  
+  <p-dialog [header]="titleDialog" [modal]="true" [(visible)]="visibleCreateEmployee" [style]="{ width: '25rem' }"
+  styleClass="custom-dialog">
+
+  <div class="dialog-content">
+    <form *ngIf="EmployeeForm" [formGroup]="EmployeeForm" class="user-form">
+
+      <div class="form-field">
+        <label for="full_name">Name</label>
+        <input formControlName="full_name" pInputText id="full_name" autocomplete="off"
+          [placeholder]="'users.form.firstNamePlaceholder' | translate" />
+      </div>
+
+      
+      <div class="form-field">
+        <label for="id_role">Leader</label>
+        <p-select [options]="leaders" formControlName="id_leader" optionLabel="first_name" optionValue="id"
+          appendTo="body" [placeholder]="'users.form.rolePlaceholder' | translate" styleClass="w-full">
+        </p-select>
+      </div>
+      <div class="form-field">
+        <label for="id_role">Location</label>
+        <p-select [options]="locations" formControlName="id_location" optionLabel="location_name" optionValue="id"
+          appendTo="body" [placeholder]="'users.form.rolePlaceholder' | translate" styleClass="w-full">
+        </p-select>
+      </div>
+      <div class="form-field">
+        <label for="id_role">Job Tittle</label>
+        <p-select [options]="jobs_titles" formControlName="id_job_title" optionLabel="description" optionValue="id"
+          appendTo="body" [placeholder]="'users.form.rolePlaceholder' | translate" styleClass="w-full">
+        </p-select>
+      </div>
+
+      <div class="form-field">
+        <label for="firstName">Phone Number (Optional)</label>
+        <input formControlName="phone_number" pInputText id="phone_number" autocomplete="off"
+          [placeholder]="'users.form.firstNamePlaceholder' | translate" />
+      </div>      
+    </form>
+  </div>
+
+  <div class="dialog-actions">
+    <button pButton type="button" [label]="'users.form.cancel' | translate" class="p-button-text"
+      (click)="visibleCreateEmployee = false">
+    </button>
+    <button *ngIf="!editingUser" pButton type="button" [disabled]="EmployeeForm.invalid "
+      [label]="'users.form.create' | translate" (click)="saveEmployee(); visibleCreateEmployee = false">
+    </button>
+    <button *ngIf="editingUser" pButton type="button" [disabled]="EmployeeForm.invalid"
+      [label]="'users.form.save' | translate" (click)="saveChangesEmployee(); visibleCreateEmployee = false">
+    </button>
+  </div>
+</p-dialog>

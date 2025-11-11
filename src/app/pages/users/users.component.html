@@ -6,36 +6,30 @@
   <div class="page-header">
     <div class="header-content">
       <div>
-       <h1 class="page-title">{{ 'users.title' | translate }}</h1>
-<p class="page-subtitle">{{ 'users.subtitle' | translate }}</p>
+        <h1 class="page-title">{{ 'users.title' | translate }}</h1>
+        <p class="page-subtitle">{{ 'users.subtitle' | translate }}</p>
       </div>
-      <button 
-        pButton 
-        class="p-button-success create-btn"
-        (click)="showCreateUser()">
+      <button pButton class="p-button-success create-btn" (click)="showCreateUser()">
         <fa-icon [icon]="faUserPlus" class="btn-icon"></fa-icon>
-       <span>{{ 'users.createButton' | translate }}</span>
+        <span>{{ 'users.createButton' | translate }}</span>
       </button>
     </div>
   </div>
 
   <!-- Users Table -->
   <div class="table-container" *ngIf="users.length > 0">
-    <p-table 
-      [value]="users" 
-      styleClass="custom-table"
-      [tableStyle]="{'min-width': '50rem'}">
-      
+    <p-table [value]="users" styleClass="custom-table" [tableStyle]="{'min-width': '50rem'}">
+
       <ng-template #header>
         <tr>
           <th>{{ 'users.table.firstName' | translate }}</th>
-<th>{{ 'users.table.lastName' | translate }}</th>
-<th>{{ 'users.table.role' | translate }}</th>
-<th class="text-center">{{ 'users.table.status' | translate }}</th>
-<th class="text-center">{{ 'users.table.actions' | translate }}</th>
+          <th>{{ 'users.table.lastName' | translate }}</th>
+          <th>{{ 'users.table.role' | translate }}</th>
+          <th class="text-center">{{ 'users.table.status' | translate }}</th>
+          <th class="text-center">{{ 'users.table.actions' | translate }}</th>
         </tr>
       </ng-template>
-      
+
       <ng-template #body let-user>
         <tr>
           <td>
@@ -50,27 +44,17 @@
             </span>
           </td>
           <td class="text-center">
-            <button 
-              class="toggle-btn"
-              [class.active]="user.status"
-              (click)="updateStatusUser(user)"
+            <button class="toggle-btn" [class.active]="user.status" (click)="updateStatusUser(user)"
               [pTooltip]="user.status ? ('users.tooltips.deactivate' | translate) : ('users.tooltips.activate' | translate)"
-
               tooltipPosition="top">
-              <fa-icon 
-                [icon]="user.status ? faToggleOn : faToggleOff" 
-                [class.text-success]="user.status"
+              <fa-icon [icon]="user.status ? faToggleOn : faToggleOff" [class.text-success]="user.status"
                 [class.text-gray]="!user.status">
               </fa-icon>
             </button>
           </td>
           <td class="text-center">
-            <button 
-              pButton 
-              class="p-button-text p-button-sm edit-btn"
-              (click)="editUser(user)"
-              [pTooltip]="'users.tooltips.edit' | translate"
-              tooltipPosition="top">
+            <button pButton class="p-button-text p-button-sm edit-btn" (click)="editUser(user)"
+              [pTooltip]="'users.tooltips.edit' | translate" tooltipPosition="top">
               <fa-icon [icon]="faEdit"></fa-icon>
             </button>
           </td>
@@ -83,106 +67,65 @@
   <div class="empty-state" *ngIf="users.length === 0">
     <fa-icon [icon]="faUserPlus" class="empty-icon"></fa-icon>
     <h3>{{ 'users.empty.title' | translate }}</h3>
-<p>{{ 'users.empty.message' | translate }}</p>
-<button pButton class="p-button-success" (click)="showCreateUser()">
-  {{ 'users.createButton' | translate }}
-</button>
+    <p>{{ 'users.empty.message' | translate }}</p>
+    <button pButton class="p-button-success" (click)="showCreateUser()">
+      {{ 'users.createButton' | translate }}
+    </button>
   </div>
 </div>
 
 <!-- Dialog (sin cambios en la estructura) -->
-<p-dialog 
- [header]="titleDialog"
-  [modal]="true" 
-  [(visible)]="visibleCreateUser" 
-  [style]="{ width: '25rem' }"
+<p-dialog [header]="titleDialog" [modal]="true" [(visible)]="visibleCreateUser" [style]="{ width: '25rem' }"
   styleClass="custom-dialog">
-  
+
   <div class="dialog-content">
     <form *ngIf="UsuarioForm" [formGroup]="UsuarioForm" class="user-form">
-      
+
       <div class="form-field">
-       <label for="firstName">{{ 'users.form.firstName' | translate }}</label>
-        <input 
-          formControlName="first_name" 
-          pInputText 
-          id="firstName" 
-          autocomplete="off" 
-          [placeholder]="'users.form.firstNamePlaceholder' | translate"/>
+        <label for="firstName">{{ 'users.form.firstName' | translate }}</label>
+        <input formControlName="first_name" pInputText id="firstName" autocomplete="off"
+          [placeholder]="'users.form.firstNamePlaceholder' | translate" />
       </div>
 
       <div class="form-field">
-       <label for="lastName">{{ 'users.form.lastName' | translate }}</label>
-        <input 
-          formControlName="last_name" 
-          pInputText 
-          id="lastName" 
-          autocomplete="off" 
+        <label for="lastName">{{ 'users.form.lastName' | translate }}</label>
+        <input formControlName="last_name" pInputText id="lastName" autocomplete="off"
           [placeholder]="'users.form.lastNamePlaceholder' | translate" />
       </div>
 
       <div class="form-field">
         <label for="pin">{{ 'users.form.pin' | translate }}</label>
         <div class="pin-input-group">
-          <input 
-            (input)="verifyPin()"
-            [type]="showPin ? 'text' : 'password'" 
-            formControlName="pin" 
-            pInputText 
-            id="pin"
-            autocomplete="off" 
-            [placeholder]="'users.form.pinPlaceholder' | translate"/>
-          <button 
-            pButton 
-            type="button"
-            [label]="showPin ? ('users.form.hide' | translate) : ('users.form.show' | translate)"
-            (click)="changePin()" 
+          <input (input)="verifyPin()" [type]="showPin ? 'text' : 'password'" formControlName="pin" pInputText id="pin"
+            autocomplete="off" [placeholder]="'users.form.pinPlaceholder' | translate" />
+          <button pButton type="button"
+            [label]="showPin ? ('users.form.hide' | translate) : ('users.form.show' | translate)" (click)="changePin()"
             class="p-button-text p-button-sm">
           </button>
         </div>
         <small *ngIf="duplicate_pin" class="error-message">
-           {{ 'users.form.pinError' | translate }}
+          {{ 'users.form.pinError' | translate }}
         </small>
       </div>
 
       <div class="form-field">
         <label for="id_role">{{ 'users.form.role' | translate }}</label>
-        <p-select 
-          [options]="role_list" 
-          formControlName="id_role" 
-          optionLabel="name" 
-          optionValue="id_rol"
-          appendTo="body" 
-         [placeholder]="'users.form.rolePlaceholder' | translate"
-          styleClass="w-full">
+        <p-select [options]="role_list" formControlName="id_role" optionLabel="name" optionValue="id_rol"
+          appendTo="body" [placeholder]="'users.form.rolePlaceholder' | translate" styleClass="w-full">
         </p-select>
       </div>
     </form>
   </div>
 
   <div class="dialog-actions">
-    <button 
-      pButton 
-      type="button"
-      [label]="'users.form.cancel' | translate" 
-      class="p-button-text"
+    <button pButton type="button" [label]="'users.form.cancel' | translate" class="p-button-text"
       (click)="visibleCreateUser = false">
     </button>
-    <button 
-      *ngIf="!editingUser"
-      pButton 
-      type="button"
-      [disabled]="UsuarioForm.invalid || duplicate_pin" 
-      [label]="'users.form.create' | translate"
-      (click)="saveUser(); visibleCreateUser = false">
+    <button *ngIf="!editingUser" pButton type="button" [disabled]="UsuarioForm.invalid || duplicate_pin"
+      [label]="'users.form.create' | translate" (click)="saveUser(); visibleCreateUser = false">
     </button>
-    <button 
-      *ngIf="editingUser"
-      pButton 
-      type="button"
-      [disabled]="UsuarioForm.invalid || duplicate_pin" 
-      [label]="'users.form.save' | translate"
-      (click)="updateUser(); visibleCreateUser = false">
+    <button *ngIf="editingUser" pButton type="button" [disabled]="UsuarioForm.invalid || duplicate_pin"
+      [label]="'users.form.save' | translate" (click)="updateUser(); visibleCreateUser = false">
     </button>
   </div>
 </p-dialog>
