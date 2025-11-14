@@ -298,6 +298,8 @@ $breakpoint-lg: 1024px;
               }
             }
 
+            
+
             .activity-content {
               flex: 1;
               padding-top: $spacing-1;
@@ -438,6 +440,9 @@ transform: translateY(20px) scale(0.95); // ← Antes era: translateY(100px) sca
       }
     }
 
+
+
+
     // FAB Secundario (Register Return)
     &.fab-secondary {
       background: $white;
@@ -524,3 +529,4 @@ transform: translateY(20px) scale(0.95); // ← Antes era: translateY(100px) sca
     right: $spacing-8;
   }
 }
+

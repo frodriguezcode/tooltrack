@@ -254,6 +254,14 @@ export class DashboardComponent implements OnInit {
 
 @HostListener('window:scroll', ['$event'])
 onWindowScroll() {
+  // Solo mostrar en móvil/tablet (pantallas <= 768px)
+  const isMobile = window.innerWidth <= 768;
+  
+  if (!isMobile) {
+    this.showFloatingButtons = false;
+    return;
+  }
+  
   const scrollPosition = window.pageYOffset + window.innerHeight;
   const documentHeight = document.documentElement.scrollHeight;
   const nearBottom = documentHeight - scrollPosition < 200;
@@ -261,6 +269,13 @@ onWindowScroll() {
   this.showFloatingButtons = !nearBottom;
 }
 
+@HostListener('window:resize', ['$event'])
+onResize() {
+  const isMobile = window.innerWidth <= 768;
+  if (!isMobile) {
+    this.showFloatingButtons = false;
+  }
+}
   loadDashboardData(): void {
     console.log('Loading dashboard data...');
   }
