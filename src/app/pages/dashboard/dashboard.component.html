@@ -121,7 +121,7 @@
               class="activity-item"
               [class.last]="i === recentActivities.length - 1">
               <div class="activity-dot" [style.background-color]="activity.color">
-                <fa-icon [icon]="activity.icon"></fa-icon>
+                <fa-icon (click)="visibleDetailLoan=true;idLoan=activity.id"  [icon]="activity.icon"></fa-icon>
               </div>
               <div class="activity-content">
                 <p class="activity-action">{{ activity.actionKey | translate }}</p>
@@ -137,7 +137,7 @@
           <button 
             pButton 
             class="p-button-success p-button-lg action-btn"
-            (click)="navigateTo('/loans')">
+            (click)="showCreateLoan()">
             <fa-icon [icon]="faPlusCircle" class="button-icon"></fa-icon>
             <span>{{ 'dashboard.actions.newLoan' | translate }}</span>
           </button>
@@ -174,3 +174,14 @@
     </button>
   </div>
 </div>
+
+
+  <p-dialog header="Create Loan" [modal]="true" [(visible)]="visibleCreateLoan" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+      <app-loans [showHeader]="false"></app-loans>
+  </p-dialog>
+  <p-dialog header="Detail Loan" [modal]="true" [(visible)]="visibleDetailLoan" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+      <app-detail-loan 
+      *ngIf="visibleDetailLoan==true"
+      (newItemEvent)="receiveNewItem($event)"
+      [idLoan]="idLoan"></app-detail-loan>
+  </p-dialog>

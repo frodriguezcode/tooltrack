@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, combineLatest, forkJoin, map, Observable } from 'rxjs';
 import { Firestore, collection, addDoc, getDocs, collectionData } from '@angular/fire/firestore';
-import { CollectionReference, doc, query, updateDoc, where } from 'firebase/firestore';
+import { CollectionReference, doc, query, updateDoc, where, writeBatch } from 'firebase/firestore';
 
 const STORAGE_KEY = 'tooltrack_is_admin';
 const USER_STORAGE_KEY = 'userToolTrackApp';
@@ -27,24 +27,44 @@ getCatalogs() {
   const jobsRef = collection(this.firestore, 'job_titles');
   const usersRef = collection(this.firestore, 'users_app');
   const employeesRef = collection(this.firestore, 'employees');
+  const buildingsRef = collection(this.firestore, 'buildings');
 
   return forkJoin([
     getDocs(locationsRef),
     getDocs(jobsRef),
     getDocs(usersRef),
-    getDocs(employeesRef)
+    getDocs(employeesRef),
+    getDocs(buildingsRef)
   ]).pipe(
-    map(([locSnap, jobSnap, userSnap, empSnap]) => {
+    map(([locSnap, jobSnap, userSnap, empSnap,bulidngSnap]) => {
       return [
         locSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })),
         jobSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })),
         userSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })),
-        empSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+        empSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })),
+        bulidngSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
       ];
     })
   );
 }
 
+
+getCatalogsForLoans() {
+  const employeesRef = collection(this.firestore, 'employees');
+  const toolsRef = collection(this.firestore, 'tools');
+  return forkJoin([
+    getDocs(employeesRef),
+    getDocs(toolsRef)
+  ]).pipe(
+    map(([employeeSnap, toolSnap]) => {
+      return [
+        employeeSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })),
+        toolSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })),
+
+      ];
+    })
+  );
+}
 
 
   private loadUserFromStorage(): any {
@@ -251,4 +271,101 @@ getCatalogs() {
       throw error;
     }
   }
+
+  //loan
+
+async getLoans(): Promise<any[]> {
+  try {
+    const coleccionRef = collection(this.firestore, 'loans');
+    const q = query(coleccionRef, where('delivered_all', '==', false));
+    const snapshot = await getDocs(q);
+    
+    if (!snapshot.empty) {
+      // Mapear TODOS los documentos
+      return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+    }
+    
+    return []; // Retornar array vacío si no hay documentos
+  } catch (error) {
+    throw error;
+  }
+}
+
+async getLoanById(id:string): Promise<any[]> {
+  try {
+    const coleccionRef = collection(this.firestore, 'loans');
+    const q = query(coleccionRef, where('id', '==', id));
+    const snapshot = await getDocs(q);
+    
+    if (!snapshot.empty) {
+      // Mapear TODOS los documentos
+      return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+    }
+    
+    return []; // Retornar array vacío si no hay documentos
+  } catch (error) {
+    throw error;
+  }
+}
+
+async createLoan(loan: any) {
+  try {
+    // 1. Crear el préstamo
+    const docRef = await addDoc(collection(this.firestore, 'loans'), loan);
+    
+    // 2. Actualizar las herramientas en lote
+    if (loan.tools && loan.tools.length > 0) {
+      await this.updateToolsQuantity(loan.tools);
+    }
+    
+    return { id: docRef.id, ...loan };
+  } catch (error) {
+    throw error;
+  }
+}
+
+async updateLoan(loan: any) {
+    try {
+      const docRef = doc(this.firestore, 'loans', loan.id);
+      if (loan.tools && loan.tools.length > 0) {
+      await this.updateToolsQuantity(loan.tools);
+      }
+      await updateDoc(docRef, loan);
+      return { id: loan.id, ...loan };
+    } catch (error) {
+      throw error;
+    }
+}
+
+async updateToolsQuantity(tools: any[]) {
+  try {
+    const batch = writeBatch(this.firestore);
+    
+    // Iterar sobre cada herramienta
+    tools.forEach((tool) => {
+      // Referencia al documento en la colección 'tools'
+      const toolRef = doc(this.firestore, 'tools', tool.id); // Asume que tool tiene un campo 'id'
+      
+      // Agregar la operación de actualización al batch
+      batch.update(toolRef, {
+        total_quantity: tool.total_quantity
+      });
+    });
+    
+    // Ejecutar todas las actualizaciones
+    await batch.commit();
+    console.log('Herramientas actualizadas exitosamente');
+  } catch (error) {
+    console.error('Error actualizando herramientas:', error);
+    throw error;
+  }
+}
+
+  
 }

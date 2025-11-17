@@ -22,6 +22,7 @@ export class ToolsComponent implements OnInit {
 constructor (private authS:AuthPinService) {}
 id_tool:FormControl=new FormControl('')
 name_tool:FormControl=new FormControl('')
+code:FormControl=new FormControl('')
 status:FormControl=new FormControl(true)
 total_quantity:FormControl=new FormControl(0)
 tools:any=[]
@@ -35,6 +36,7 @@ ngOnInit(): void {
 getTools(){
   this.authS.getTools().then(resp=>{
     this.tools=resp
+
   })
 }
 
@@ -47,6 +49,7 @@ editTool(tool:any){
 console.log('tool',tool)
 
 this.name_tool.setValue(tool.name)
+this.code.setValue(tool.code)
 this.total_quantity.setValue(tool.total_quantity)
 this.id_tool.setValue(tool.id)
 this.titleDialog='Edit Tool'
@@ -58,13 +61,15 @@ this.visibleCreateTool=true
 saveTool(){
   let _tool={
     "name":this.name_tool.value,
-    "total_quantity":this.total_quantity.value,
+    "total_quantity":Number(this.total_quantity.value),
+    "code":this.code.value,
     "status":this.status.value,
     "ids_buildings":[]
   }
   this.authS.saveTool(_tool).then(resp=>{
     this.name_tool.setValue('')
     this.total_quantity.setValue('')
+    this.code.setValue('')
     this.tools.push(_tool)
   })
 
@@ -79,7 +84,8 @@ saveTool(){
 updateTool(){
   let _tool={
     "name":this.name_tool.value,
-    "total_quantity":this.total_quantity.value,
+    "total_quantity":Number(this.total_quantity.value),
+    "code":this.code.value,
     "id":this.id_tool.value,
   }
 this.authS.updateTool(_tool).then(resp=>{
@@ -87,6 +93,7 @@ this.authS.updateTool(_tool).then(resp=>{
      if (index !== -1) {
       this.tools[index].name = this.name_tool.value
       this.tools[index].total_quantity = this.total_quantity.value
+      this.tools[index].code = this.code.value
 
      }
 

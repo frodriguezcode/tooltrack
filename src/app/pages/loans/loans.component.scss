@@ -1,0 +1,28 @@
+@import '../users/users.component.scss';
+
+.form-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+/* Para pantallas de computadora (≥ 768px) */
+@media (min-width: 768px) {
+  .form-container {
+    grid-template-columns: 1fr 1fr auto;
+    align-items: end;
+  }
+  
+  .select-wrapper,
+  .multiselect-wrapper,
+  .button-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  
+}
+.button-create-loan{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}

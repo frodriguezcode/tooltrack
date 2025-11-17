@@ -11,7 +11,7 @@ import { AppHeaderComponent } from '../../shared/components/app-header/app-heade
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-
+import { DialogModule } from 'primeng/dialog';
 // Font Awesome
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import {
@@ -36,7 +36,10 @@ import {
   faHistory,
   faChevronRight
 } from '@fortawesome/free-solid-svg-icons';
-
+import { AuthPinService } from '../../core/auth-pin.service';
+import { LoansComponent } from '../loans/loans.component';
+import { DetailLoanComponent } from '../detail-loan/detail-loan.component';
+import { TableModule } from 'primeng/table';
 interface DashboardCard {
   titleKey: string;
   icon: any;
@@ -54,6 +57,7 @@ interface QuickStat {
 }
 
 interface Activity {
+  id: string;
   actionKey: string;
   user: string;
   time: string;
@@ -71,7 +75,11 @@ interface Activity {
     RippleModule,
     TranslateModule,
     FontAwesomeModule,
-    AppHeaderComponent
+    AppHeaderComponent,
+    DialogModule,
+    LoansComponent,
+    DetailLoanComponent,
+    TableModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
@@ -80,7 +88,8 @@ export class DashboardComponent implements OnInit {
   
   // ✅ Control de botones flotantes
   showFloatingButtons: boolean = false;
-
+ visibleCreateLoan: boolean = false;
+ visibleDetailLoan: boolean = false;
   // Iconos Font Awesome
   faUsers = faUsers;
   faTools = faTools;
@@ -89,7 +98,7 @@ export class DashboardComponent implements OnInit {
   faPlusCircle = faPlusCircle;
   faCheckCircle = faCheckCircle;
   faChevronRight = faChevronRight;
-  
+  idLoan:string=''
   quickStats: QuickStat[] = [
     {
       labelKey: 'dashboard.stats.toolsOnLoan',
@@ -187,38 +196,13 @@ export class DashboardComponent implements OnInit {
   ];
 
   recentActivities: Activity[] = [
-    {
-      actionKey: 'dashboard.activities.loanOf',
-      user: 'Juan Pérez - Martillo #045',
-      time: 'Hace 5 min',
-      icon: faHandHolding,
-      color: '#718096'
-    },
-    {
-      actionKey: 'dashboard.activities.returnOf',
-      user: 'María López - Taladro #023',
-      time: 'Hace 15 min',
-      icon: faUndo,
-      color: '#718096'
-    },
-    {
-      actionKey: 'dashboard.activities.newEmployee',
-      user: 'Carlos Ruiz',
-      time: 'Hace 1 hora',
-      icon: faUserPlus,
-      color: '#718096'
-    },
-    {
-      actionKey: 'dashboard.activities.alert',
-      user: 'Sistema',
-      time: 'Hace 2 horas',
-      icon: faBell,
-      color: '#718096'
-    }
+
+
   ];
 
   constructor(
     private router: Router,
+    private AuthS:AuthPinService,
     public langService: LangService,
     private library: FaIconLibrary
   ) {
@@ -250,7 +234,35 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.langService.init();
     this.loadDashboardData();
+    this.getLoans()
   }
+
+   showCreateLoan() {
+    this.visibleCreateLoan = true;
+    } 
+receiveNewItem(event:any){
+  console.log('event',event)
+  this.visibleDetailLoan=event
+}
+getLoans(){
+  this.AuthS.getLoans().then((resp:any)=>{
+    console.log('resp',resp)
+    resp.forEach((element:any) => {
+      this.recentActivities.push(   
+    {
+      id: element.id,
+      actionKey: 'dashboard.activities.loanOf',
+      user: element.employee.full_name,
+      time: element.date + ' ' +element.hour ,
+      icon: faHandHolding,
+      color: '#718096'
+    },
+    )
+      
+    });
+
+  })
+}  
 
 @HostListener('window:scroll', ['$event'])
 onWindowScroll() {

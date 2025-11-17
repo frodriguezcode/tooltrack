@@ -1,1 +1,60 @@
-<p>loans works!</p>
+<div class="users-container">
+    <!-- Header -->
+    <app-header *ngIf="showHeader"></app-header>
+<div style="margin-top: 30px;">
+    <p-card  header="Tool Allocation">
+      <div  class="form-container">
+        <div class="select-wrapper">
+          <p-select 
+            [options]="employees" 
+            [(ngModel)]="employeeSelected" 
+            optionLabel="full_name"
+            placeholder="Select a employee"
+            styleClass="w-full md:w-80" />
+        </div>
+        <div class="multiselect-wrapper">
+          <p-multiselect 
+            [options]="tools" 
+            [(ngModel)]="toolsSelected" 
+            optionLabel="name"
+            placeholder="Selected tools" 
+            [maxSelectedLabels]="3" 
+            styleClass="w-full md:w-100" />
+        </div>
+    
+      </div>
+    
+    <p-button
+    (onClick)="createLoan()"
+    [disabled]="toolsSelected.length==0 || !employeeSelected || availability==false"
+    class="button-create-loan"
+    label="Create Loan" severity="success" />
+      <p-table
+      *ngIf="toolsSelected.length>0 && employeeSelected"
+      [value]="toolsSelected" [tableStyle]="{ 'min-width': '10rem' }">
+        <ng-template #header>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Availability</th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-tool>
+            <tr>
+                <td>{{ tool.name }}</td>
+                <td><p-inputnumber 
+                    (onInput)="verifyQuantity(tool.id)"
+                    inputId="integeronly" [(ngModel)]="tool.quantity" />
+                </td>
+                <td style="color: red;" *ngIf="!tool.availability">There is not enough quantity, available: ({{tool.total_quantity}}) </td>
+                <td style="color: green;" *ngIf="tool.availability">There is a sufficient quantity , available: ({{tool.total_quantity}})</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    
+    
+    </p-card>
+
+</div>
+
+</div>

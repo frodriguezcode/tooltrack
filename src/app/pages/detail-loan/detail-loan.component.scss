@@ -1,0 +1,13 @@
+@import '../employees/employees.component.scss';
+/* Centrar todo el texto de la tabla */
+.table-center-text th,
+.table-center-text td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Opcional: centrar también el contenido de los inputs dentro de la tabla */
+.table-center-text p-inputNumber,
+.table-center-text input {
+  text-align: center;
+}

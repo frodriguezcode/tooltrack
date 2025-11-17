@@ -1,0 +1,29 @@
+      <p-table
+      *ngIf="loan.length>0"
+      class="table-center-text"
+      [value]="loan[0].tools" [tableStyle]="{ 'min-width': '10rem' }">
+        <ng-template #header>
+            <tr>
+                <th class="text-center">Name</th>
+                <th class="text-center">Amount Borrowed</th>
+                <th class="text-center">Delivered</th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-tool>
+            <tr>
+                <td class="text-center">{{ tool.name }}</td>
+                <td class="text-center">{{ tool.quantity }}</td>
+          <td class="text-center">
+            <button 
+            [disabled]="tool.delivered==true"
+            class="toggle-btn" [class.active]="tool.delivered" (click)="updateDelivered(tool)"
+              [pTooltip]="tool.delivered ? ('users.tooltips.deactivate' | translate) : ('users.tooltips.activate' | translate)"
+              tooltipPosition="top">
+              <fa-icon [icon]="tool.delivered ? faToggleOn : faToggleOff" [class.text-success]="tool.delivered"
+                [class.text-gray]="!tool.delivered">
+              </fa-icon>
+            </button>
+          </td>
+            </tr>
+        </ng-template>
+    </p-table>

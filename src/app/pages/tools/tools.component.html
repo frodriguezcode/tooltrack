@@ -7,6 +7,7 @@
             <tr>
                 <th>Edit</th>
                 <th>Name Tool</th>
+                <th>Code</th>
                 <th>Status</th>
                 <th>Quantity</th>
             </tr>
@@ -15,6 +16,7 @@
             <tr>
                 <td><p-button (onClick)="editTool(tool)" label="Edit" severity="info" /></td>
                 <td>{{tool.name}}</td>
+                <td>{{tool.code}}</td>
                 
                 <td *ngIf="tool.status==true"><p-button 
                  (onClick)="updateStatusTool(tool)"   
@@ -44,6 +46,10 @@
             <div class="form-row">
                 <label for="lastName">Quantity</label>
                 <input [formControl]="total_quantity" pInputText id="lastName" autocomplete="off" />
+            </div>
+            <div class="form-row">
+                <label for="lastName">Tool Code</label>
+                <input [formControl]="code" pInputText id="lastName" autocomplete="off" />
             </div>
             <br>
 

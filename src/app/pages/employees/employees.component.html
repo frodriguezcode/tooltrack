@@ -23,7 +23,7 @@
         <tr>
           <th class="text-center">Full Name</th>
           <th class="text-center">Job Title</th>
-          <th class="text-center">Location</th>
+          <th class="text-center">Building</th>
           <th class="text-center">Leader</th>
           <th class="text-center">Status</th>
           <th class="text-center">Edit</th>
@@ -39,7 +39,7 @@
             <span class="user-name">{{getNameJobTitle(employee.id_job_title)}}</span>
           </td>
           <td class="text-center">
-            <span class="user-name">{{getNameLocation(employee.id_location)}}</span>
+            <span class="user-name">{{getNameBuliding(employee.id_buiding)}}</span>
           </td>
           <td class="text-center">
             <span class="user-name">{{getNameLeader(employee.id_leader)}}</span>
@@ -88,8 +88,8 @@
         </p-select>
       </div>
       <div class="form-field">
-        <label for="id_role">Location</label>
-        <p-select [options]="locations" formControlName="id_location" optionLabel="location_name" optionValue="id"
+        <label for="id_role">Building</label>
+        <p-select [options]="buildings" formControlName="id_buiding" optionLabel="Description" optionValue="id"
           appendTo="body" [placeholder]="'users.form.rolePlaceholder' | translate" styleClass="w-full">
         </p-select>
       </div>
