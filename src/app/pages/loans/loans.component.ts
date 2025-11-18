@@ -41,9 +41,6 @@ getCatalogsForLoans(){
     this.employees=resp[0]
     this.tools=resp[1]
     this.tools.map((tool:any)=>{tool.quantity=1,tool.delivered=false,tool.availability=true})
-
-    console.log('employees',this.employees)
-    console.log('tools',this.tools)
    
   })
 }
@@ -105,7 +102,6 @@ this.toolsSelected.map((tool:any)=>tool.total_quantity-=Number(tool.quantity))
   })
 
 
-  console.log('tools',this.tools)
 }
 }
 

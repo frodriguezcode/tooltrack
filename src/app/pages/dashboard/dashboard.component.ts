@@ -90,6 +90,7 @@ export class DashboardComponent implements OnInit {
   showFloatingButtons: boolean = false;
  visibleCreateLoan: boolean = false;
  visibleDetailLoan: boolean = false;
+ loans:any=[]
   // Iconos Font Awesome
   faUsers = faUsers;
   faTools = faTools;
@@ -99,36 +100,8 @@ export class DashboardComponent implements OnInit {
   faCheckCircle = faCheckCircle;
   faChevronRight = faChevronRight;
   idLoan:string=''
-  quickStats: QuickStat[] = [
-    {
-      labelKey: 'dashboard.stats.toolsOnLoan',
-      value: 24,
-      icon: faTools,
-      color: '#718096',
-      trend: '+5'
-    },
-    {
-      labelKey: 'dashboard.stats.activeEmployees',
-      value: 48,
-      icon: faHardHat,
-      color: '#718096',
-      trend: '+2'
-    },
-    {
-      labelKey: 'dashboard.stats.loansToday',
-      value: 12,
-      icon: faClock,
-      color: '#718096',
-      trend: '+8'
-    },
-    {
-      labelKey: 'dashboard.stats.pendingReturns',
-      value: 5,
-      icon: faExclamationTriangle,
-      color: '#718096',
-      trend: '-2'
-    }
-  ];
+  quantityLoansTools:number=0
+  quickStats: QuickStat[] = [];
 
   peopleCards: DashboardCard[] = [
     {
@@ -241,12 +214,11 @@ export class DashboardComponent implements OnInit {
     this.visibleCreateLoan = true;
     } 
 receiveNewItem(event:any){
-  console.log('event',event)
   this.visibleDetailLoan=event
 }
 getLoans(){
   this.AuthS.getLoans().then((resp:any)=>{
-    console.log('resp',resp)
+    this.loans=resp
     resp.forEach((element:any) => {
       this.recentActivities.push(   
     {
@@ -258,8 +230,48 @@ getLoans(){
       color: '#718096'
     },
     )
+      element.tools.forEach((tool:any) => {
+          this.quantityLoansTools+=tool.quantity
+      });
+
+
       
     });
+
+
+
+    this.quickStats=[
+      
+    {
+      labelKey: 'dashboard.stats.toolsOnLoan',
+      value: this.quantityLoansTools,
+      icon: faTools,
+      color: '#718096',
+      trend: '+5'
+    },
+    {
+      labelKey: 'dashboard.stats.activeEmployees',
+      value: 48,
+      icon: faHardHat,
+      color: '#718096',
+      trend: '+2'
+    },
+    {
+      labelKey: 'dashboard.stats.loansToday',
+      value: 12,
+      icon: faClock,
+      color: '#718096',
+      trend: '+8'
+    },
+    {
+      labelKey: 'dashboard.stats.pendingReturns',
+      value: 5,
+      icon: faExclamationTriangle,
+      color: '#718096',
+      trend: '-2'
+    }
+  ];
+    
 
   })
 }  
@@ -289,7 +301,6 @@ onResize() {
   }
 }
   loadDashboardData(): void {
-    console.log('Loading dashboard data...');
   }
 
   navigateTo(route: string): void {

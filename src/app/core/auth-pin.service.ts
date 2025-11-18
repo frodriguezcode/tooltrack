@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, combineLatest, forkJoin, map, Observable } from 'rxjs';
 import { Firestore, collection, addDoc, getDocs, collectionData } from '@angular/fire/firestore';
-import { CollectionReference, doc, query, updateDoc, where, writeBatch } from 'firebase/firestore';
+import { CollectionReference, doc, query, setDoc, updateDoc, where, writeBatch } from 'firebase/firestore';
 
 const STORAGE_KEY = 'tooltrack_is_admin';
 const USER_STORAGE_KEY = 'userToolTrackApp';
@@ -316,23 +316,44 @@ async getLoanById(id:string): Promise<any[]> {
 
 async createLoan(loan: any) {
   try {
-    // 1. Crear el préstamo
-    const docRef = await addDoc(collection(this.firestore, 'loans'), loan);
-    
-    // 2. Actualizar las herramientas en lote
+    // 1. Crear id manualmente
+    const docRef = doc(collection(this.firestore, 'loans'));
+    const id = docRef.id;
+
+    // 2. Guardar el documento con el id dentro
+    await setDoc(docRef, { id, ...loan });
+
+    // 3. Actualizar herramientas
     if (loan.tools && loan.tools.length > 0) {
       await this.updateToolsQuantity(loan.tools);
     }
-    
-    return { id: docRef.id, ...loan };
+
+    return { id, ...loan };
+  } catch (error) {
+    throw error;
+  }
+}
+async createLogReturn(tool_returned: any) {
+  try {
+    // 1. Crear id manualmente
+    const docRef = doc(collection(this.firestore, 'logs_tools_returned'));
+    const id = docRef.id;
+
+    // 2. Guardar el documento con el id dentro
+    await setDoc(docRef, { id, ...tool_returned });
+
+
+    return { id, ...tool_returned };
   } catch (error) {
     throw error;
   }
 }
 
-async updateLoan(loan: any) {
+async updateLoan(loan: any,tool_returned:any) {
     try {
+      await this.createLogReturn(tool_returned)
       const docRef = doc(this.firestore, 'loans', loan.id);
+    
       if (loan.tools && loan.tools.length > 0) {
       await this.updateToolsQuantity(loan.tools);
       }
