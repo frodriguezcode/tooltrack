@@ -177,11 +177,14 @@
 
 
   <p-dialog header="Create Loan" [modal]="true" [(visible)]="visibleCreateLoan" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
-      <app-loans [showHeader]="false"></app-loans>
+      <app-loans 
+      (SendPrestamo)="receiveLoan($event)"
+      [showHeader]="false"></app-loans>
   </p-dialog>
   <p-dialog header="Detail Loan" [modal]="true" [(visible)]="visibleDetailLoan" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
       <app-detail-loan 
       *ngIf="visibleDetailLoan==true"
+      (EditPrestamo)="receiveEditLoan($event)"
       (newItemEvent)="receiveNewItem($event)"
       [idLoan]="idLoan"></app-detail-loan>
   </p-dialog>

@@ -7,7 +7,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
-import Swal from 'sweetalert2'
 import {
   faToggleOn,
   faToggleOff,
@@ -29,6 +28,7 @@ import { TooltipModule } from 'primeng/tooltip';
 export class DetailLoanComponent implements OnInit {
 @Input() idLoan:string=''
 @Output() newItemEvent = new EventEmitter<boolean>();
+@Output() EditPrestamo = new EventEmitter<any>();
 faToggleOn = faToggleOn;
 faToggleOff = faToggleOff;
 faUserPlus = faUserPlus;
@@ -125,8 +125,14 @@ updateDelivered(tool:any) {
       this.loan[0].delivered_all =
         this.loan[0].tools.every((t:any) => t.delivered);
 
-      this.AuthS.updateLoan(this.loan[0],tool_returned).then((resp:any)=>{
 
+
+      this.AuthS.updateLoan(this.loan[0],tool_returned).then((resp:any)=>{
+        this.EditPrestamo.emit({
+          "loanEdit":this.loan[0],
+          "tool_returned":tool_returned
+        
+        })
       })
 
 

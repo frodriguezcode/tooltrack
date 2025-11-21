@@ -349,6 +349,16 @@ async createLogReturn(tool_returned: any) {
   }
 }
 
+  async getLogsReturns() {
+    try {
+      const coleccionRef = collection(this.firestore, 'logs_tools_returned');
+      const snapshot = await getDocs(coleccionRef);
+      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+      throw error;
+    }
+  }
+
 async updateLoan(loan: any,tool_returned:any) {
     try {
       await this.createLogReturn(tool_returned)

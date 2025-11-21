@@ -1,4 +1,4 @@
-import { Component, Input, input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, input, OnInit, Output } from '@angular/core';
 import { AppHeaderComponent } from '../../shared/components/app-header/app-header.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -9,6 +9,7 @@ import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { InputNumberModule } from 'primeng/inputnumber';
+
 @Component({
   selector: 'app-loans',
   imports: [ CommonModule, 
@@ -21,6 +22,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 })
 export class LoansComponent implements OnInit {
 @Input() showHeader=true  
+@Output() SendPrestamo = new EventEmitter<any>();
 availability:boolean=true
 employees:any=[]
 employeeSelected:any
@@ -97,6 +99,7 @@ this.toolsSelected.map((tool:any)=>tool.total_quantity-=Number(tool.quantity))
   });
 
   this.authS.createLoan(loan).then((resp:any)=>{
+    this.SendPrestamo.emit(loan)
     this.toolsSelected=[]
     this.employeeSelected=null
   })

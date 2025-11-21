@@ -91,6 +91,7 @@ export class DashboardComponent implements OnInit {
  visibleCreateLoan: boolean = false;
  visibleDetailLoan: boolean = false;
  loans:any=[]
+ returnsLogs:any=[]
   // Iconos Font Awesome
   faUsers = faUsers;
   faTools = faTools;
@@ -101,6 +102,7 @@ export class DashboardComponent implements OnInit {
   faChevronRight = faChevronRight;
   idLoan:string=''
   quantityLoansTools:number=0
+  quantityReturnedTools:number=0
   quickStats: QuickStat[] = [];
 
   peopleCards: DashboardCard[] = [
@@ -216,10 +218,31 @@ export class DashboardComponent implements OnInit {
 receiveNewItem(event:any){
   this.visibleDetailLoan=event
 }
-getLoans(){
-  this.AuthS.getLoans().then((resp:any)=>{
-    this.loans=resp
-    resp.forEach((element:any) => {
+
+
+receiveLoan(loan:any){
+  this.loans.push(loan)
+  this.calculateToolsLoan()
+}
+receiveEditLoan(dataLoans:any){
+console.log('dataLoans',dataLoans)
+  const index = this.loans.findIndex(
+        (t: any) => t.id == dataLoans.loanEdit.id
+  );
+
+  this.loans[index]=dataLoans.loanEdit
+
+ this.returnsLogs.push(dataLoans.tool_returned)
+  this.calculateToolsLoan()
+
+}
+calculateToolsLoan(){
+  this.quantityLoansTools=0
+  this.quantityReturnedTools=0
+  this.recentActivities=[]
+this.loans
+.filter((loan:any)=>loan.delivered_all==false)
+.forEach((element:any) => {
       this.recentActivities.push(   
     {
       id: element.id,
@@ -233,21 +256,20 @@ getLoans(){
       element.tools.forEach((tool:any) => {
           this.quantityLoansTools+=tool.quantity
       });
-
-
       
     });
 
-
-
-    this.quickStats=[
+  this.returnsLogs.forEach((log:any) => {
+    this.quantityReturnedTools+=log.quantity
+  });  
+  this.quickStats=[
       
     {
       labelKey: 'dashboard.stats.toolsOnLoan',
       value: this.quantityLoansTools,
       icon: faTools,
       color: '#718096',
-      trend: '+5'
+      trend: '+' + this.quantityReturnedTools
     },
     {
       labelKey: 'dashboard.stats.activeEmployees',
@@ -271,10 +293,24 @@ getLoans(){
       trend: '-2'
     }
   ];
-    
+
+}
+
+getLoans(){
+  this.AuthS.getLoans().then((resp:any)=>{
+    this.loans=resp
+    this.getLogsReturns()
 
   })
-}  
+} 
+
+getLogsReturns(){
+  this.AuthS.getLogsReturns().then(resp=>{
+    this.returnsLogs=resp
+    this.calculateToolsLoan()
+  })
+
+}
 
 @HostListener('window:scroll', ['$event'])
 onWindowScroll() {
