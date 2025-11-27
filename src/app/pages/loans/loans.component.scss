@@ -1,35 +1,280 @@
 @import '../users/users.component.scss';
 
-.form-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
+// Variables
+$primary: #0047AB;
+$success: #7AC142;
+$danger: #DC2626;
+$gray-100: #F7FAFC;
+$gray-200: #EDF2F7;
+$gray-400: #CBD5E0;
+$gray-600: #718096;
+$gray-700: #4A5568;
+$gray-900: #1A202C;
+$white: #FFFFFF;
+$border-radius: 8px;
+$border-radius-lg: 12px;
+$shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+// Desktop/Mobile visibility
+.desktop-view {
+  display: block;
 }
 
-/* Para pantallas de computadora (≥ 768px) */
-@media (min-width: 768px) {
+.mobile-view {
+  display: none;
+}
+
+// Loan Card Container
+.loan-card {
+  max-width: 1400px;
+  margin: 1.5rem auto 0;
+  padding: 1.5rem;
+  background: $white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow;
+
   .form-container {
-    grid-template-columns: 1fr 1fr auto;
-    align-items: end;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        font-weight: 500;
+        color: $gray-700;
+        font-size: 0.875rem;
+      }
+    }
   }
-  
-  .select-wrapper,
-  .multiselect-wrapper,
-  .button-wrapper {
+
+  .button-create-loan {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  // Table container override
+  .table-container {
+    margin: 0;
+    padding: 0;
+
+    ::ng-deep {
+      .custom-table {
+        .p-datatable-tbody > tr > td {
+          .availability-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: $border-radius;
+            font-size: 0.8rem;
+            font-weight: 500;
+
+            &.available {
+              background: rgba(122, 193, 66, 0.15);
+              color: $success;
+            }
+
+            &.unavailable {
+              background: rgba(220, 38, 38, 0.15);
+              color: $danger;
+            }
+
+            fa-icon {
+              font-size: 0.9rem;
+            }
+          }
+        }
+      }
+
+      .quantity-input {
+        width: 100px;
+
+        .p-inputnumber-input {
+          width: 100%;
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+// Mobile Cards View
+.mobile-view {
+  .mobile-cards {
     display: flex;
     flex-direction: column;
+    gap: 1rem;
   }
-  
+
+  .tool-loan-card {
+    background: $gray-100;
+    border-radius: $border-radius-lg;
+    overflow: hidden;
+    border: 1px solid $gray-200;
+
+    .card-header-loan {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: $white;
+      border-bottom: 1px solid $gray-200;
+
+      .tool-icon {
+        color: $primary;
+        font-size: 1.25rem;
+      }
+
+      .tool-name {
+        font-weight: 600;
+        color: $gray-900;
+        font-size: 1rem;
+      }
+    }
+
+    .card-body-loan {
+      padding: 1rem;
+
+      .card-field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .field-label {
+          font-size: 0.75rem;
+          color: $gray-600;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .quantity-control {
+          ::ng-deep {
+            .quantity-input-mobile {
+              max-width: 160px;
+
+              .p-inputnumber-input {
+                text-align: center;
+                font-weight: 600;
+                padding: 0.5rem 0.25rem;
+                width: 60px;
+              }
+
+              .p-inputnumber-button {
+                background: $primary;
+                border-color: $primary;
+                width: 36px;
+                padding: 0.5rem;
+
+                &:hover {
+                  background: darken($primary, 10%);
+                }
+              }
+            }
+          }
+        }
+
+        &.availability-field {
+          padding-top: 1rem;
+          border-top: 1px solid $gray-200;
+        }
+
+        .availability-badge-mobile {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem;
+          border-radius: $border-radius;
+          font-size: 0.875rem;
+          font-weight: 500;
+
+          &.available {
+            background: rgba(122, 193, 66, 0.15);
+            color: darken($success, 10%);
+
+            fa-icon {
+              color: $success;
+            }
+          }
+
+          &.unavailable {
+            background: rgba(220, 38, 38, 0.15);
+            color: darken($danger, 10%);
+
+            fa-icon {
+              color: $danger;
+            }
+          }
+
+          fa-icon {
+            font-size: 1.25rem;
+          }
+
+          .availability-text {
+            flex: 1;
+          }
+        }
+      }
+    }
+  }
 }
 
-@media (min-width: 768px) {
+// Responsive Breakpoint
+@media (max-width: 768px) {
+  .desktop-view {
+    display: none !important;
+  }
 
-  
-}
+  .mobile-view {
+    display: block;
+  }
 
+  .loan-card {
+    margin: 1rem;
+    padding: 1rem;
 
-.button-create-loan{
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1rem;
+    .form-container {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .button-create-loan {
+      justify-content: stretch;
+
+      ::ng-deep {
+        .p-button {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    }
+  }
+
+  .users-container {
+    .page-header {
+      padding: 1rem;
+
+      .header-content {
+        .page-title {
+          font-size: 1.25rem;
+        }
+
+        .page-subtitle {
+          font-size: 0.875rem;
+        }
+      }
+    }
+  }
 }

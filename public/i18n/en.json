@@ -90,9 +90,8 @@
       "alert": "Alert: Tool not returned",
       "system": "System"
     }
-    
   },
-   "users": {
+  "users": {
     "title": "Users Management",
     "subtitle": "Manage system users and permissions",
     "createButton": "Create User",
@@ -132,7 +131,106 @@
       "create": "Create User",
       "save": "Save Changes"
     }
+  },
+  "employees": {
+    "title": "Employees Management",
+    "subtitle": "Manage workers and their assignments",
+    "createButton": "Create Employee",
+    "table": {
+      "fullName": "Full Name",
+      "jobTitle": "Job Title",
+      "building": "Building",
+      "leader": "Leader",
+      "status": "Status",
+      "edit": "Edit"
+    },
+    "tooltips": {
+      "activate": "Activate employee",
+      "deactivate": "Deactivate employee",
+      "edit": "Edit employee"
+    },
+    "empty": {
+      "title": "No employees yet",
+      "message": "Create your first employee to get started"
+    },
+    "dialog": {
+      "create": "Create Employee",
+      "edit": "Edit Employee"
+    },
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Enter full name",
+      "leader": "Leader",
+      "leaderPlaceholder": "Select a leader",
+      "building": "Building",
+      "buildingPlaceholder": "Select a building",
+      "jobTitle": "Job Title",
+      "jobTitlePlaceholder": "Select a job title",
+      "phone": "Phone Number (Optional)",
+      "phonePlaceholder": "Enter phone number",
+      "cancel": "Cancel",
+      "create": "Create",
+      "save": "Save Changes"
+    }
+  },
+  "loans": {
+    "title": "Tool Allocation",
+    "subtitle": "Assign tools to employees",
+    "createButton": "Create Loan",
+    "form": {
+      "selectEmployee": "Select an employee",
+      "selectTools": "Select tools",
+      "employeePlaceholder": "Select an employee",
+      "toolsPlaceholder": "Selected tools"
+    },
+    "table": {
+      "name": "Name",
+      "quantity": "Quantity",
+      "availability": "Availability"
+    },
+    "availability": {
+      "sufficient": "Sufficient quantity, available:",
+      "insufficient": "Not enough quantity, available:"
+    },
+    "validation": {
+      "selectEmployee": "Please select an employee",
+      "selectTools": "Please select at least one tool"
+    }
+  },
+  "tools": {
+    "title": "Tools Management",
+    "subtitle": "Manage system tool inventory",
+    "createButton": "Create Tool",
+    "table": {
+      "name": "Name",
+      "code": "Code",
+      "quantity": "Quantity",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "tooltips": {
+      "activate": "Activate tool",
+      "deactivate": "Deactivate tool",
+      "edit": "Edit tool"
+    },
+    "empty": {
+      "title": "No tools yet",
+      "message": "Create your first tool to get started"
+    },
+    "dialog": {
+      "create": "Create Tool",
+      "edit": "Edit Tool"
+    },
+    "form": {
+      "name": "Tool Name",
+      "namePlaceholder": "Enter tool name",
+      "code": "Code",
+      "codePlaceholder": "Enter tool code",
+      "quantity": "Quantity",
+      "quantityPlaceholder": "Enter quantity",
+      "cancel": "Cancel",
+      "create": "Create",
+      "save": "Save Changes"
+    }
   }
-
-
 }

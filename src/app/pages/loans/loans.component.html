@@ -1,60 +1,127 @@
 <div class="users-container">
-    <!-- Header -->
-    <app-header *ngIf="showHeader"></app-header>
-<div style="margin-top: 30px;">
-    <p-card  header="Tool Allocation">
-      <div  class="form-container">
-        <div class="select-wrapper">
-          <p-select 
-            [options]="employees" 
-            [(ngModel)]="employeeSelected" 
-            optionLabel="full_name"
-            placeholder="Select a employee"
-            styleClass="w-full md:w-80" />
-        </div>
-        <div class="multiselect-wrapper">
-          <p-multiselect 
-            [options]="tools" 
-            [(ngModel)]="toolsSelected" 
-            optionLabel="name"
-            placeholder="Selected tools" 
-            [maxSelectedLabels]="3" 
-            styleClass="w-full md:w-100" />
-        </div>
-    
+  <!-- Header -->
+  <app-header *ngIf="showHeader"></app-header>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div>
+        <h1 class="page-title">{{ 'loans.title' | translate }}</h1>
+        <p class="page-subtitle">{{ 'loans.subtitle' | translate }}</p>
       </div>
-    
-    <p-button
-    (onClick)="createLoan()"
-    [disabled]="toolsSelected.length==0 || !employeeSelected || availability==false"
-    class="button-create-loan"
-    label="Create Loan" severity="success" />
-      <p-table
-      *ngIf="toolsSelected.length>0 && employeeSelected"
-      [value]="toolsSelected" [tableStyle]="{ 'min-width': '5rem' }">
+    </div>
+  </div>
+
+  <!-- Loan Form Card -->
+  <div class="loan-card">
+    <div class="form-container">
+      <div class="form-field">
+        <label>{{ 'loans.form.selectEmployee' | translate }}</label>
+        <p-select 
+          [options]="employees" 
+          [(ngModel)]="employeeSelected" 
+          optionLabel="full_name"
+          [placeholder]="'loans.form.employeePlaceholder' | translate"
+          styleClass="w-full" />
+      </div>
+
+      <div class="form-field">
+        <label>{{ 'loans.form.selectTools' | translate }}</label>
+        <p-multiselect 
+          [options]="tools" 
+          [(ngModel)]="toolsSelected" 
+          optionLabel="name"
+          [placeholder]="'loans.form.toolsPlaceholder' | translate"
+          [maxSelectedLabels]="3" 
+          styleClass="w-full" />
+      </div>
+    </div>
+
+    <div class="button-create-loan">
+      <p-button
+        (onClick)="createLoan()"
+        [disabled]="toolsSelected.length === 0 || !employeeSelected || availability === false"
+        [label]="'loans.createButton' | translate" 
+        severity="success"
+        icon="pi pi-plus" />
+    </div>
+
+    <!-- Desktop Table View -->
+    <div class="table-container desktop-view" *ngIf="toolsSelected.length > 0 && employeeSelected">
+      <p-table [value]="toolsSelected" styleClass="custom-table" [tableStyle]="{ 'min-width': '100%' }">
         <ng-template #header>
-            <tr>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>Availability</th>
-            </tr>
+          <tr>
+            <th class="text-center">{{ 'loans.table.name' | translate }}</th>
+            <th class="text-center">{{ 'loans.table.quantity' | translate }}</th>
+            <th class="text-center">{{ 'loans.table.availability' | translate }}</th>
+          </tr>
         </ng-template>
         <ng-template #body let-tool>
-            <tr>
-                <td>{{ tool.name }}</td>
-                <td><p-inputnumber 
-                    (onInput)="verifyQuantity(tool.id)"
-                    inputId="integeronly" [(ngModel)]="tool.quantity" />
-                </td>
-                <td style="color: red;" *ngIf="!tool.availability">There is not enough quantity, available: ({{tool.total_quantity}}) </td>
-                <td style="color: green;" *ngIf="tool.availability">There is a sufficient quantity , available: ({{tool.total_quantity}})</td>
-            </tr>
+          <tr>
+            <td class="text-center">
+              <span class="user-name">{{ tool.name }}</span>
+            </td>
+            <td class="text-center">
+              <p-inputnumber 
+                (onInput)="verifyQuantity(tool.id)"
+                inputId="integeronly" 
+                [(ngModel)]="tool.quantity"
+                [min]="1"
+                styleClass="quantity-input" />
+            </td>
+            <td class="text-center">
+              <span class="availability-badge" [class.available]="tool.availability" [class.unavailable]="!tool.availability">
+                <fa-icon [icon]="tool.availability ? faCheckCircle : faTimesCircle"></fa-icon>
+                <span *ngIf="tool.availability">{{ 'loans.availability.sufficient' | translate }} ({{ tool.total_quantity }})</span>
+                <span *ngIf="!tool.availability">{{ 'loans.availability.insufficient' | translate }} ({{ tool.total_quantity }})</span>
+              </span>
+            </td>
+          </tr>
         </ng-template>
-    </p-table>
-    
-    
-    </p-card>
+      </p-table>
+    </div>
 
-</div>
+    <!-- Mobile Cards View -->
+    <div class="mobile-view" *ngIf="toolsSelected.length > 0 && employeeSelected">
+      <div class="mobile-cards">
+        <div class="tool-loan-card" *ngFor="let tool of toolsSelected">
+          <!-- Card Header -->
+          <div class="card-header-loan">
+            <fa-icon [icon]="faWrench" class="tool-icon"></fa-icon>
+            <span class="tool-name">{{ tool.name }}</span>
+          </div>
 
+          <!-- Card Body -->
+          <div class="card-body-loan">
+            <div class="card-field">
+              <span class="field-label">{{ 'loans.table.quantity' | translate }}</span>
+              <div class="quantity-control">
+                <p-inputnumber 
+                  (onInput)="verifyQuantity(tool.id)"
+                  inputId="integeronly" 
+                  [(ngModel)]="tool.quantity"
+                  [min]="1"
+                  [showButtons]="true"
+                  buttonLayout="horizontal"
+                  incrementButtonIcon="pi pi-plus"
+                  decrementButtonIcon="pi pi-minus"
+                  styleClass="quantity-input-mobile" />
+              </div>
+            </div>
+
+            <div class="card-field availability-field">
+              <span class="field-label">{{ 'loans.table.availability' | translate }}</span>
+              <span class="availability-badge-mobile" [class.available]="tool.availability" [class.unavailable]="!tool.availability">
+                <fa-icon [icon]="tool.availability ? faCheckCircle : faTimesCircle"></fa-icon>
+                <span class="availability-text">
+                  {{ tool.availability ? ('loans.availability.sufficient' | translate) : ('loans.availability.insufficient' | translate) }}
+                  ({{ tool.total_quantity }})
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

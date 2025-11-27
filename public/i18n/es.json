@@ -54,7 +54,7 @@
         "title": "Empleados",
         "description": "Gestionar trabajadores"
       },
-        "users": {
+      "users": {
         "title": "Usuarios",
         "description": "Gestionar usuarios"
       },
@@ -94,9 +94,8 @@
       "alert": "Alerta: Herramienta no devuelta",
       "system": "Sistema"
     }
-    
   },
-   "users": {
+  "users": {
     "title": "Gestión de Usuarios",
     "subtitle": "Administra usuarios del sistema y permisos",
     "createButton": "Crear Usuario",
@@ -134,6 +133,107 @@
       "rolePlaceholder": "Seleccione un rol",
       "cancel": "Cancelar",
       "create": "Crear Usuario",
+      "save": "Guardar Cambios"
+    }
+  },
+  "employees": {
+    "title": "Gestión de Empleados",
+    "subtitle": "Administra trabajadores y sus asignaciones",
+    "createButton": "Crear Empleado",
+    "table": {
+      "fullName": "Nombre Completo",
+      "jobTitle": "Puesto",
+      "building": "Edificio",
+      "leader": "Líder",
+      "status": "Estado",
+      "edit": "Editar"
+    },
+    "tooltips": {
+      "activate": "Activar empleado",
+      "deactivate": "Desactivar empleado",
+      "edit": "Editar empleado"
+    },
+    "empty": {
+      "title": "Sin empleados aún",
+      "message": "Crea tu primer empleado para comenzar"
+    },
+    "dialog": {
+      "create": "Crear Empleado",
+      "edit": "Editar Empleado"
+    },
+    "form": {
+      "name": "Nombre",
+      "namePlaceholder": "Ingrese el nombre completo",
+      "leader": "Líder",
+      "leaderPlaceholder": "Seleccione un líder",
+      "building": "Edificio",
+      "buildingPlaceholder": "Seleccione un edificio",
+      "jobTitle": "Puesto",
+      "jobTitlePlaceholder": "Seleccione un puesto",
+      "phone": "Teléfono (Opcional)",
+      "phonePlaceholder": "Ingrese el teléfono",
+      "cancel": "Cancelar",
+      "create": "Crear",
+      "save": "Guardar Cambios"
+    }
+  },
+  "loans": {
+    "title": "Asignación de Herramientas",
+    "subtitle": "Asigna herramientas a empleados",
+    "createButton": "Crear Préstamo",
+    "form": {
+      "selectEmployee": "Seleccionar empleado",
+      "selectTools": "Seleccionar herramientas",
+      "employeePlaceholder": "Seleccione un empleado",
+      "toolsPlaceholder": "Herramientas seleccionadas"
+    },
+    "table": {
+      "name": "Nombre",
+      "quantity": "Cantidad",
+      "availability": "Disponibilidad"
+    },
+    "availability": {
+      "sufficient": "Cantidad suficiente, disponible:",
+      "insufficient": "Cantidad insuficiente, disponible:"
+    },
+    "validation": {
+      "selectEmployee": "Por favor seleccione un empleado",
+      "selectTools": "Por favor seleccione al menos una herramienta"
+    }
+  },
+  "tools": {
+    "title": "Gestión de Herramientas",
+    "subtitle": "Administra el inventario de herramientas del sistema",
+    "createButton": "Crear Herramienta",
+    "table": {
+      "name": "Nombre",
+      "code": "Código",
+      "quantity": "Cantidad",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "tooltips": {
+      "activate": "Activar herramienta",
+      "deactivate": "Desactivar herramienta",
+      "edit": "Editar herramienta"
+    },
+    "empty": {
+      "title": "Sin herramientas aún",
+      "message": "Crea tu primera herramienta para comenzar"
+    },
+    "dialog": {
+      "create": "Crear Herramienta",
+      "edit": "Editar Herramienta"
+    },
+    "form": {
+      "name": "Nombre de Herramienta",
+      "namePlaceholder": "Ingrese el nombre",
+      "code": "Código",
+      "codePlaceholder": "Ingrese el código",
+      "quantity": "Cantidad",
+      "quantityPlaceholder": "Ingrese la cantidad",
+      "cancel": "Cancelar",
+      "create": "Crear",
       "save": "Guardar Cambios"
     }
   }

@@ -1,4 +1,4 @@
-  <div class="users-container">
+<div class="users-container">
   <!-- Header -->
   <app-header></app-header>
 
@@ -6,57 +6,58 @@
   <div class="page-header">
     <div class="header-content">
       <div>
-        <h1 class="page-title">{{ 'users.title' | translate }}</h1>
-        <p class="page-subtitle">{{ 'users.subtitle' | translate }}</p>
+        <h1 class="page-title">{{ 'employees.title' | translate }}</h1>
+        <p class="page-subtitle">{{ 'employees.subtitle' | translate }}</p>
       </div>
       <button pButton class="p-button-success create-btn" (click)="showCreateEmployee()">
         <fa-icon [icon]="faUserPlus" class="btn-icon"></fa-icon>
-        <span>{{ 'users.createButton' | translate }}</span>
+        <span>{{ 'employees.createButton' | translate }}</span>
       </button>
     </div>
   </div>
+
   <!-- Employees Table -->
   <div class="table-container" *ngIf="employees.length > 0">
     <p-table [value]="employees" styleClass="custom-table" [tableStyle]="{'min-width': '50rem'}">
 
       <ng-template #header>
         <tr>
-          <th class="text-center">Full Name</th>
-          <th class="text-center">Job Title</th>
-          <th class="text-center">Building</th>
-          <th class="text-center">Leader</th>
-          <th class="text-center">Status</th>
-          <th class="text-center">Edit</th>
+          <th class="text-center">{{ 'employees.table.fullName' | translate }}</th>
+          <th class="text-center">{{ 'employees.table.jobTitle' | translate }}</th>
+          <th class="text-center">{{ 'employees.table.building' | translate }}</th>
+          <th class="text-center">{{ 'employees.table.leader' | translate }}</th>
+          <th class="text-center">{{ 'employees.table.status' | translate }}</th>
+          <th class="text-center">{{ 'employees.table.edit' | translate }}</th>
         </tr>
       </ng-template>
 
       <ng-template #body let-employee>
         <tr>
           <td class="text-center">
-            <span class="user-name">{{employee.full_name}}</span>
+            <span class="user-name">{{ employee.full_name }}</span>
           </td>
           <td class="text-center">
-            <span class="user-name">{{getNameJobTitle(employee.id_job_title)}}</span>
+            <span class="user-name">{{ getNameJobTitle(employee.id_job_title) }}</span>
           </td>
           <td class="text-center">
-            <span class="user-name">{{getNameBuliding(employee.id_buiding)}}</span>
+            <span class="user-name">{{ getNameBuliding(employee.id_buiding) }}</span>
           </td>
           <td class="text-center">
-            <span class="user-name">{{getNameLeader(employee.id_leader)}}</span>
+            <span class="user-name">{{ getNameLeader(employee.id_leader) }}</span>
           </td>
-
           <td class="text-center">
             <button class="toggle-btn" [class.active]="employee.status" (click)="updateStatusEmployee(employee)"
-              [pTooltip]="employee.status ? ('users.tooltips.deactivate' | translate) : ('users.tooltips.activate' | translate)"
+              [pTooltip]="employee.status ? ('employees.tooltips.deactivate' | translate) : ('employees.tooltips.activate' | translate)"
               tooltipPosition="top">
-              <fa-icon [icon]="employee.status ? faToggleOn : faToggleOff" [class.text-success]="employee.status"
+              <fa-icon [icon]="employee.status ? faToggleOn : faToggleOff" 
+                [class.text-success]="employee.status"
                 [class.text-gray]="!employee.status">
               </fa-icon>
             </button>
           </td>
           <td class="text-center">
             <button pButton class="p-button-text p-button-sm edit-btn" (click)="editEmployee(employee)"
-              [pTooltip]="'users.tooltips.edit' | translate" tooltipPosition="top">
+              [pTooltip]="'employees.tooltips.edit' | translate" tooltipPosition="top">
               <fa-icon [icon]="faEdit"></fa-icon>
             </button>
           </td>
@@ -64,59 +65,70 @@
       </ng-template>
     </p-table>
   </div>
-  </div>
-  
 
-  
-  <p-dialog [header]="titleDialog" [modal]="true" [(visible)]="visibleCreateEmployee" [style]="{ width: '25rem' }"
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="employees.length === 0">
+    <fa-icon [icon]="faUsers" class="empty-icon"></fa-icon>
+    <h3>{{ 'employees.empty.title' | translate }}</h3>
+    <p>{{ 'employees.empty.message' | translate }}</p>
+  </div>
+</div>
+
+<!-- Create/Edit Dialog -->
+<p-dialog 
+  [header]="editingUser ? ('employees.dialog.edit' | translate) : ('employees.dialog.create' | translate)" 
+  [modal]="true" 
+  [(visible)]="visibleCreateEmployee" 
+  [style]="{ width: '25rem' }"
   styleClass="custom-dialog">
 
   <div class="dialog-content">
     <form *ngIf="EmployeeForm" [formGroup]="EmployeeForm" class="user-form">
 
       <div class="form-field">
-        <label for="full_name">Name</label>
+        <label for="full_name">{{ 'employees.form.name' | translate }}</label>
         <input formControlName="full_name" pInputText id="full_name" autocomplete="off"
-          [placeholder]="'users.form.firstNamePlaceholder' | translate" />
+          [placeholder]="'employees.form.namePlaceholder' | translate" />
       </div>
 
-      
       <div class="form-field">
-        <label for="id_role">Leader</label>
+        <label for="id_leader">{{ 'employees.form.leader' | translate }}</label>
         <p-select [options]="leaders" formControlName="id_leader" optionLabel="first_name" optionValue="id"
-          appendTo="body" [placeholder]="'users.form.rolePlaceholder' | translate" styleClass="w-full">
-        </p-select>
-      </div>
-      <div class="form-field">
-        <label for="id_role">Building</label>
-        <p-select [options]="buildings" formControlName="id_buiding" optionLabel="Description" optionValue="id"
-          appendTo="body" [placeholder]="'users.form.rolePlaceholder' | translate" styleClass="w-full">
-        </p-select>
-      </div>
-      <div class="form-field">
-        <label for="id_role">Job Tittle</label>
-        <p-select [options]="jobs_titles" formControlName="id_job_title" optionLabel="description" optionValue="id"
-          appendTo="body" [placeholder]="'users.form.rolePlaceholder' | translate" styleClass="w-full">
+          appendTo="body" [placeholder]="'employees.form.leaderPlaceholder' | translate" styleClass="w-full">
         </p-select>
       </div>
 
       <div class="form-field">
-        <label for="firstName">Phone Number (Optional)</label>
+        <label for="id_buiding">{{ 'employees.form.building' | translate }}</label>
+        <p-select [options]="buildings" formControlName="id_buiding" optionLabel="Description" optionValue="id"
+          appendTo="body" [placeholder]="'employees.form.buildingPlaceholder' | translate" styleClass="w-full">
+        </p-select>
+      </div>
+
+      <div class="form-field">
+        <label for="id_job_title">{{ 'employees.form.jobTitle' | translate }}</label>
+        <p-select [options]="jobs_titles" formControlName="id_job_title" optionLabel="description" optionValue="id"
+          appendTo="body" [placeholder]="'employees.form.jobTitlePlaceholder' | translate" styleClass="w-full">
+        </p-select>
+      </div>
+
+      <div class="form-field">
+        <label for="phone_number">{{ 'employees.form.phone' | translate }}</label>
         <input formControlName="phone_number" pInputText id="phone_number" autocomplete="off"
-          [placeholder]="'users.form.firstNamePlaceholder' | translate" />
-      </div>      
+          [placeholder]="'employees.form.phonePlaceholder' | translate" />
+      </div>
     </form>
   </div>
 
   <div class="dialog-actions">
-    <button pButton type="button" [label]="'users.form.cancel' | translate" class="p-button-text"
+    <button pButton type="button" [label]="'employees.form.cancel' | translate" class="p-button-text"
       (click)="visibleCreateEmployee = false">
     </button>
-    <button *ngIf="!editingUser" pButton type="button" [disabled]="EmployeeForm.invalid "
-      [label]="'users.form.create' | translate" (click)="saveEmployee(); visibleCreateEmployee = false">
+    <button *ngIf="!editingUser" pButton type="button" [disabled]="EmployeeForm.invalid"
+      [label]="'employees.form.create' | translate" (click)="saveEmployee(); visibleCreateEmployee = false">
     </button>
     <button *ngIf="editingUser" pButton type="button" [disabled]="EmployeeForm.invalid"
-      [label]="'users.form.save' | translate" (click)="saveChangesEmployee(); visibleCreateEmployee = false">
+      [label]="'employees.form.save' | translate" (click)="saveChangesEmployee(); visibleCreateEmployee = false">
     </button>
   </div>
 </p-dialog>

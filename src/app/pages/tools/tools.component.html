@@ -1,74 +1,178 @@
-<div class="card">
-    <p-button 
-    class=""
-    (click)="createTool()" label="Create Tool" severity="success" />
-    <p-table *ngIf="tools.length>0" [value]="tools" [tableStyle]="{ 'min-width': '50rem','margin-top':'5px' }">
-        <ng-template #header>
-            <tr>
-                <th>Edit</th>
-                <th>Name Tool</th>
-                <th>Code</th>
-                <th>Status</th>
-                <th>Quantity</th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-tool>
-            <tr>
-                <td><p-button (onClick)="editTool(tool)" label="Edit" severity="info" /></td>
-                <td>{{tool.name}}</td>
-                <td>{{tool.code}}</td>
-                
-                <td *ngIf="tool.status==true"><p-button 
-                 (onClick)="updateStatusTool(tool)"   
-                label="deactivate" severity="danger" /></td>
-                <td *ngIf="tool.status==false"><p-button
-                 (onClick)="updateStatusTool(tool)"   
-                label="activate" severity="success" />
-                </td>   
-                <td>{{tool.total_quantity}}</td>
-      
-            </tr>
-        </ng-template>
+<div class="users-container">
+  <!-- Header -->
+  <app-header></app-header>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div>
+        <h1 class="page-title">{{ 'tools.title' | translate }}</h1>
+        <p class="page-subtitle">{{ 'tools.subtitle' | translate }}</p>
+      </div>
+      <button pButton class="p-button-success create-btn" (click)="createTool()">
+        <fa-icon [icon]="faPlus" class="btn-icon"></fa-icon>
+        <span>{{ 'tools.createButton' | translate }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Desktop Table View -->
+  <div class="table-container desktop-view" *ngIf="tools.length > 0">
+    <p-table [value]="tools" styleClass="custom-table" [tableStyle]="{'min-width': '50rem'}">
+
+      <ng-template #header>
+        <tr>
+          <th class="text-center">{{ 'tools.table.name' | translate }}</th>
+          <th class="text-center">{{ 'tools.table.code' | translate }}</th>
+          <th class="text-center">{{ 'tools.table.quantity' | translate }}</th>
+          <th class="text-center">{{ 'tools.table.status' | translate }}</th>
+          <th class="text-center">{{ 'tools.table.actions' | translate }}</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-tool>
+        <tr>
+          <td class="text-center">
+            <span class="user-name">{{ tool.name }}</span>
+          </td>
+          <td class="text-center">
+            <span class="role-badge leader">{{ tool.code }}</span>
+          </td>
+          <td class="text-center">
+            <span class="user-name">{{ tool.total_quantity }}</span>
+          </td>
+          <td class="text-center">
+            <button class="toggle-btn" [class.active]="tool.status" (click)="updateStatusTool(tool)"
+              [pTooltip]="tool.status ? ('tools.tooltips.deactivate' | translate) : ('tools.tooltips.activate' | translate)"
+              tooltipPosition="top">
+              <fa-icon 
+                [icon]="tool.status ? faToggleOn : faToggleOff" 
+                [class.text-success]="tool.status"
+                [class.text-gray]="!tool.status">
+              </fa-icon>
+            </button>
+          </td>
+          <td class="text-center">
+            <button pButton class="p-button-text p-button-sm edit-btn" (click)="editTool(tool)"
+              [pTooltip]="'tools.tooltips.edit' | translate" tooltipPosition="top">
+              <fa-icon [icon]="faEdit"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </ng-template>
     </p-table>
+  </div>
+
+  <!-- Mobile Cards View -->
+  <div class="mobile-view" *ngIf="tools.length > 0">
+    <div class="mobile-cards">
+      <div 
+        class="tool-card" 
+        *ngFor="let tool of tools; let i = index"
+        [class.expanded]="expandedIndex === i">
+        
+        <!-- Card Header (always visible) -->
+        <div class="card-header" (click)="toggleExpand(i)">
+          <div class="card-header-content">
+            <fa-icon [icon]="faWrench" class="tool-icon"></fa-icon>
+            <span class="tool-name">{{ tool.name }}</span>
+          </div>
+          <fa-icon 
+            [icon]="expandedIndex === i ? faChevronUp : faChevronDown" 
+            class="expand-icon">
+          </fa-icon>
+        </div>
+
+        <!-- Card Body (collapsible) -->
+        <div class="card-body" [@expandCollapse]="expandedIndex === i ? 'expanded' : 'collapsed'">
+          <div class="card-field">
+            <span class="field-label">{{ 'tools.table.code' | translate }}</span>
+            <span class="field-value code-badge">{{ tool.code }}</span>
+          </div>
+
+          <div class="card-field">
+            <span class="field-label">{{ 'tools.table.quantity' | translate }}</span>
+            <span class="field-value">{{ tool.total_quantity }}</span>
+          </div>
+
+          <div class="card-field">
+            <span class="field-label">{{ 'tools.table.status' | translate }}</span>
+            <button class="toggle-btn" [class.active]="tool.status" (click)="updateStatusTool(tool); $event.stopPropagation()">
+              <fa-icon 
+                [icon]="tool.status ? faToggleOn : faToggleOff" 
+                [class.text-success]="tool.status"
+                [class.text-gray]="!tool.status">
+              </fa-icon>
+            </button>
+          </div>
+
+          <div class="card-actions">
+            <button pButton class="p-button-sm p-button-outlined" (click)="editTool(tool); $event.stopPropagation()">
+              <fa-icon [icon]="faEdit" class="btn-icon"></fa-icon>
+              <span>{{ 'tools.tooltips.edit' | translate }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="tools.length === 0">
+    <fa-icon [icon]="faToolbox" class="empty-icon"></fa-icon>
+    <h3>{{ 'tools.empty.title' | translate }}</h3>
+    <p>{{ 'tools.empty.message' | translate }}</p>
+  </div>
 </div>
 
+<!-- Create/Edit Dialog -->
+<p-dialog 
+  [header]="editingTool ? ('tools.dialog.edit' | translate) : ('tools.dialog.create' | translate)" 
+  [modal]="true" 
+  [(visible)]="visibleCreateTool" 
+  [style]="{ width: '25rem' }"
+  styleClass="custom-dialog">
 
-<p-dialog header="{{titleDialog}}" [modal]="true" [(visible)]="visibleCreateTool" [style]="{ width: '30rem' }">
+  <div class="dialog-content">
+    <form class="user-form">
+      <div class="form-field">
+        <label for="toolName">{{ 'tools.form.name' | translate }}</label>
+        <input [formControl]="name_tool" pInputText id="toolName" autocomplete="off" 
+          [placeholder]="'tools.form.namePlaceholder' | translate" />
+      </div>
 
-    <div class="form-grid">
-        <form>
-            <br>
-            <div class="form-row">
-                <label for="firstName">Name Tool</label>
-                <input [formControl]="name_tool" pInputText id="firstName" autocomplete="off" />
-            </div>
-            <br>
-            <div class="form-row">
-                <label for="lastName">Quantity</label>
-                <input [formControl]="total_quantity" pInputText id="lastName" autocomplete="off" />
-            </div>
-            <div class="form-row">
-                <label for="lastName">Tool Code</label>
-                <input [formControl]="code" pInputText id="lastName" autocomplete="off" />
-            </div>
-            <br>
+      <div class="form-field">
+        <label for="toolCode">{{ 'tools.form.code' | translate }}</label>
+        <input [formControl]="code" pInputText id="toolCode" autocomplete="off" 
+          [placeholder]="'tools.form.codePlaceholder' | translate" />
+      </div>
 
+      <div class="form-field">
+        <label for="toolQty">{{ 'tools.form.quantity' | translate }}</label>
+        <input [formControl]="total_quantity" pInputText id="toolQty" type="number" autocomplete="off" 
+          [placeholder]="'tools.form.quantityPlaceholder' | translate" />
+      </div>
+    </form>
+  </div>
 
-            <br>
- 
-
-            <br>
-  
-
-        </form>
-    </div>
-
-    <div class="flex justify-end gap-2 mt-6">
-        <p-button
-        [disabled]="this.name_tool.value==''"
-        *ngIf="!editingTool" label="Save" (click)="saveTool();visibleCreateTool = false"></p-button>
-        <p-button 
-        [disabled]="this.name_tool.value==''"
-        *ngIf="editingTool"  label="Save changes" (click)="updateTool();visibleCreateTool = false"></p-button>
-    </div>
+  <div class="dialog-actions">
+    <button pButton type="button" [label]="'tools.form.cancel' | translate" class="p-button-text" 
+      (click)="visibleCreateTool = false"></button>
+    <button 
+      *ngIf="!editingTool" 
+      pButton 
+      type="button" 
+      [disabled]="name_tool.value === ''"
+      [label]="'tools.form.create' | translate" 
+      (click)="saveTool(); visibleCreateTool = false">
+    </button>
+    <button 
+      *ngIf="editingTool" 
+      pButton 
+      type="button" 
+      [disabled]="name_tool.value === ''"
+      [label]="'tools.form.save' | translate" 
+      (click)="updateTool(); visibleCreateTool = false">
+    </button>
+  </div>
 </p-dialog>

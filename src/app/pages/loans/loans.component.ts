@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AppHeaderComponent } from '../../shared/components/app-header/app-header.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -9,103 +9,116 @@ import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { TranslateModule } from '@ngx-translate/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  faWrench,
+  faCheckCircle,
+  faTimesCircle,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-loans',
-  imports: [ CommonModule, 
-    AppHeaderComponent,MultiSelectModule,
+  imports: [
+    CommonModule,
+    AppHeaderComponent,
+    MultiSelectModule,
     InputNumberModule,
-    FormsModule,CardModule,SelectModule,ButtonModule,TableModule],
+    FormsModule,
+    CardModule,
+    SelectModule,
+    ButtonModule,
+    TableModule,
+    TranslateModule,
+    FontAwesomeModule
+  ],
   templateUrl: './loans.component.html',
   styleUrl: './loans.component.scss',
   providers: [DatePipe],
 })
 export class LoansComponent implements OnInit {
-@Input() showHeader=true  
-@Output() SendPrestamo = new EventEmitter<any>();
-availability:boolean=true
-employees:any=[]
-employeeSelected:any
-date: any = new Date();
-tools:any=[]
-toolsSelected:any=[]
-quantityByTool:any
-userToolTrackApp:any
-constructor(private authS:AuthPinService,private datePipe: DatePipe){}
-ngOnInit(): void {
-  this.userToolTrackApp =JSON.parse(localStorage.getItem("userToolTrackApp")!);
-  
-  this.getCatalogsForLoans()
-}
+  @Input() showHeader = true;
+  @Output() SendPrestamo = new EventEmitter<any>();
 
-getCatalogsForLoans(){
-  this.authS.getCatalogsForLoans().subscribe((resp:any)=>{
-    this.employees=resp[0]
-    this.tools=resp[1]
-    this.tools.map((tool:any)=>{tool.quantity=1,tool.delivered=false,tool.availability=true})
-   
-  })
-}
+  // Font Awesome Icons
+  faWrench = faWrench;
+  faCheckCircle = faCheckCircle;
+  faTimesCircle = faTimesCircle;
 
-verifyQuantity(idTool:any){
+  // State
+  availability: boolean = true;
+  employees: any = [];
+  employeeSelected: any;
+  date: any = new Date();
+  tools: any = [];
+  toolsSelected: any = [];
+  quantityByTool: any;
+  userToolTrackApp: any;
 
-  let toolFound=this.toolsSelected.find((tool:any)=>tool.id==idTool)
-  if(toolFound.total_quantity<toolFound.quantity){
-    toolFound.availability=false
-  }
-  else 
-  {
-  toolFound.availability=true
+  constructor(private authS: AuthPinService, private datePipe: DatePipe) {}
+
+  ngOnInit(): void {
+    this.userToolTrackApp = JSON.parse(localStorage.getItem('userToolTrackApp')!);
+    this.getCatalogsForLoans();
   }
 
-  const index = this.toolsSelected.findIndex(
-          (tool: any) =>
-            tool.id == idTool
-  );
+  getCatalogsForLoans() {
+    this.authS.getCatalogsForLoans().subscribe((resp: any) => {
+      this.employees = resp[0];
+      this.tools = resp[1];
+      this.tools.map((tool: any) => {
+        tool.quantity = 1;
+        tool.delivered = false;
+        tool.availability = true;
+      });
+    });
+  }
 
-  this.toolsSelected[index].availability=toolFound.availability
-  this.availability=this.toolsSelected.filter((tool:any)=>tool.availability==false).length>0?false:true 
+  verifyQuantity(idTool: any) {
+    let toolFound = this.toolsSelected.find((tool: any) => tool.id == idTool);
+    if (toolFound.total_quantity < toolFound.quantity) {
+      toolFound.availability = false;
+    } else {
+      toolFound.availability = true;
+    }
 
-}
+    const index = this.toolsSelected.findIndex((tool: any) => tool.id == idTool);
+    this.toolsSelected[index].availability = toolFound.availability;
+    this.availability = this.toolsSelected.filter((tool: any) => tool.availability == false).length > 0 ? false : true;
+  }
 
-createLoan(){
-let date = this.datePipe.transform(
+  createLoan() {
+    let date = this.datePipe.transform(
       this.date.setDate(this.date.getDate()),
-      "yyyy-MM-dd"
-);  
+      'yyyy-MM-dd'
+    );
 
-const currentDate = new Date();
-const hours = String(currentDate.getHours()).padStart(2, '0');
-const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-const seconds = String(currentDate.getSeconds()).padStart(2, '0');
-this.toolsSelected.map((tool:any)=>tool.total_quantity-=Number(tool.quantity))
-  let loan = {
-  'hour': `${hours}:${minutes}:${seconds}`,
-  'date' :date,
-  'delivered_all' :false,
-  'id_leader':this.userToolTrackApp.id,
-  'employee':this.employeeSelected,
-  'id_employee':this.employeeSelected.id,
-  'tools':this.toolsSelected
+    const currentDate = new Date();
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+    
+    this.toolsSelected.map((tool: any) => (tool.total_quantity -= Number(tool.quantity)));
+    
+    let loan = {
+      hour: `${hours}:${minutes}:${seconds}`,
+      date: date,
+      delivered_all: false,
+      id_leader: this.userToolTrackApp.id,
+      employee: this.employeeSelected,
+      id_employee: this.employeeSelected.id,
+      tools: this.toolsSelected,
+    };
+
+    this.toolsSelected.forEach((toolSelect: any) => {
+      const index = this.tools.findIndex((tool: any) => tool.id == toolSelect.id);
+      this.tools[index].total_quantity = toolSelect.total_quantity;
+    });
+
+    this.authS.createLoan(loan).then((resp: any) => {
+      this.SendPrestamo.emit(resp);
+      this.toolsSelected = [];
+      this.employeeSelected = null;
+    });
   }
-
-  this.toolsSelected.forEach((toolSelect:any) => {
-  const index = this.tools.findIndex(
-          (tool: any) =>
-            tool.id == toolSelect.id
-  );
-
-  this.tools[index].total_quantity=toolSelect.total_quantity
-  });
-
-  this.authS.createLoan(loan).then((resp:any)=>{
-
-    this.SendPrestamo.emit(resp)
-    this.toolsSelected=[]
-    this.employeeSelected=null
-  })
-
-
 }
-}
-

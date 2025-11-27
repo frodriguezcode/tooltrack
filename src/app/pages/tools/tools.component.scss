@@ -1,1 +1,241 @@
-@import '../users/users.component.scss'
+@import '../users/users.component.scss';
+
+// Variables
+$primary: #0047AB;
+$success: #7AC142;
+$gray-100: #F7FAFC;
+$gray-200: #EDF2F7;
+$gray-400: #CBD5E0;
+$gray-600: #718096;
+$gray-700: #4A5568;
+$gray-800: #2D3748;
+$gray-900: #1A202C;
+$white: #FFFFFF;
+$border-radius: 8px;
+$border-radius-lg: 12px;
+$shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+// Desktop/Mobile visibility
+.desktop-view {
+  display: block;
+}
+
+.mobile-view {
+  display: none;
+}
+
+// Enhanced toggle animation
+.users-container {
+  .table-container {
+    ::ng-deep {
+      .custom-table {
+        .p-datatable-tbody > tr > td {
+          .toggle-btn {
+            position: relative;
+            
+            fa-icon {
+              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              display: inline-block;
+
+              &.text-success {
+                color: $success;
+                filter: drop-shadow(0 0 4px rgba(122, 193, 66, 0.5));
+              }
+
+              &.text-gray {
+                color: #9ca3af;
+                filter: none;
+              }
+            }
+
+            &:hover fa-icon {
+              transform: scale(1.2);
+            }
+
+            &:active fa-icon {
+              transform: scale(0.9);
+              transition: all 0.1s ease;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Mobile Cards Styles
+.mobile-view {
+  padding: 1rem;
+
+  .mobile-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .tool-card {
+    background: $white;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &.expanded {
+      box-shadow: $shadow-md;
+
+      .card-header {
+        border-bottom: 1px solid $gray-200;
+      }
+    }
+
+    // Card Header
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: $gray-100;
+      }
+
+      &:active {
+        background: $gray-200;
+      }
+
+      .card-header-content {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        .tool-icon {
+          color: $primary;
+          font-size: 1.25rem;
+        }
+
+        .tool-name {
+          font-weight: 600;
+          color: $gray-900;
+          font-size: 1rem;
+        }
+      }
+
+      .expand-icon {
+        color: $gray-600;
+        font-size: 0.875rem;
+        transition: transform 0.3s ease;
+      }
+    }
+
+    // Card Body
+    .card-body {
+      background: $gray-100;
+      
+      .card-field {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid $gray-200;
+
+        &:last-of-type {
+          border-bottom: none;
+        }
+
+        .field-label {
+          font-size: 0.875rem;
+          color: $gray-600;
+          font-weight: 500;
+        }
+
+        .field-value {
+          font-size: 0.875rem;
+          color: $gray-900;
+          font-weight: 600;
+
+          &.code-badge {
+            background: #E8F4FD;
+            color: $primary;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+          }
+        }
+
+        .toggle-btn {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0.25rem;
+          font-size: 1.75rem;
+
+          fa-icon {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+            &.text-success {
+              color: $success;
+              filter: drop-shadow(0 0 4px rgba(122, 193, 66, 0.5));
+            }
+
+            &.text-gray {
+              color: $gray-400;
+            }
+          }
+
+          &:active fa-icon {
+            transform: scale(0.9);
+          }
+        }
+      }
+
+      .card-actions {
+        display: flex;
+        justify-content: flex-end;
+        padding-top: 0.75rem;
+        margin-top: 0.5rem;
+        border-top: 1px solid $gray-200;
+
+        button {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+
+          .btn-icon {
+            font-size: 0.875rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive Breakpoint
+@media (max-width: 768px) {
+  .desktop-view {
+    display: none !important;
+  }
+
+  .mobile-view {
+    display: block;
+  }
+
+  .users-container {
+    .page-header {
+      .header-content {
+        .create-btn {
+          padding: 0.75rem;
+          
+          span {
+            display: none;
+          }
+
+          .btn-icon {
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+}
