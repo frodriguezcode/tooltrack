@@ -42,7 +42,6 @@ userToolTrackApp:any
 date: any = new Date();
 ngOnInit(): void {
 this.userToolTrackApp =JSON.parse(localStorage.getItem("userToolTrackApp")!);
-
  this.getLoan()   
 }
 getLoan(){

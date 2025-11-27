@@ -99,7 +99,8 @@ this.toolsSelected.map((tool:any)=>tool.total_quantity-=Number(tool.quantity))
   });
 
   this.authS.createLoan(loan).then((resp:any)=>{
-    this.SendPrestamo.emit(loan)
+
+    this.SendPrestamo.emit(resp)
     this.toolsSelected=[]
     this.employeeSelected=null
   })

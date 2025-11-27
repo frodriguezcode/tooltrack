@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { LangService } from '../../core/lang.service';
 
@@ -82,7 +82,8 @@ interface Activity {
     TableModule
   ],
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  providers:[DatePipe]
 })
 export class DashboardComponent implements OnInit {
   
@@ -91,6 +92,7 @@ export class DashboardComponent implements OnInit {
  visibleCreateLoan: boolean = false;
  visibleDetailLoan: boolean = false;
  loans:any=[]
+ users:any=[]
  returnsLogs:any=[]
   // Iconos Font Awesome
   faUsers = faUsers;
@@ -179,7 +181,8 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private AuthS:AuthPinService,
     public langService: LangService,
-    private library: FaIconLibrary
+    private library: FaIconLibrary,
+    private datePipe: DatePipe
   ) {
     // Pre-cargar todos los iconos
     this.library.addIcons(
@@ -212,6 +215,14 @@ export class DashboardComponent implements OnInit {
     this.getLoans()
   }
 
+  getEmployees(){
+    this.AuthS.getEmployees().then(resp=>{
+      this.users=resp.filter((data:any)=>data.status==true)
+      this.calculateToolsLoan()
+
+    })
+  }
+
    showCreateLoan() {
     this.visibleCreateLoan = true;
     } 
@@ -225,7 +236,6 @@ receiveLoan(loan:any){
   this.calculateToolsLoan()
 }
 receiveEditLoan(dataLoans:any){
-console.log('dataLoans',dataLoans)
   const index = this.loans.findIndex(
         (t: any) => t.id == dataLoans.loanEdit.id
   );
@@ -237,9 +247,16 @@ console.log('dataLoans',dataLoans)
 
 }
 calculateToolsLoan(){
+ let date = this.datePipe.transform(
+     new Date().setDate(new Date().getDate()),
+      "yyyy-MM-dd")
+let loansToday=[]
+
   this.quantityLoansTools=0
   this.quantityReturnedTools=0
   this.recentActivities=[]
+
+loansToday=this.loans.filter((loan:any)=>loan.date==date)  
 this.loans
 .filter((loan:any)=>loan.delivered_all==false)
 .forEach((element:any) => {
@@ -259,9 +276,12 @@ this.loans
       
     });
 
+    console.log('recentActivities',this.recentActivities)
+
   this.returnsLogs.forEach((log:any) => {
     this.quantityReturnedTools+=log.quantity
   });  
+
   this.quickStats=[
       
     {
@@ -273,17 +293,17 @@ this.loans
     },
     {
       labelKey: 'dashboard.stats.activeEmployees',
-      value: 48,
+      value: this.users.length,
       icon: faHardHat,
       color: '#718096',
-      trend: '+2'
+      //trend: '+2'
     },
     {
       labelKey: 'dashboard.stats.loansToday',
-      value: 12,
+      value: loansToday.length,
       icon: faClock,
       color: '#718096',
-      trend: '+8'
+      //trend: '+8'
     },
     {
       labelKey: 'dashboard.stats.pendingReturns',
@@ -305,9 +325,13 @@ getLoans(){
 } 
 
 getLogsReturns(){
+ let date = this.datePipe.transform(
+     new Date().setDate(new Date().getDate()),
+      "yyyy-MM-dd")
   this.AuthS.getLogsReturns().then(resp=>{
-    this.returnsLogs=resp
-    this.calculateToolsLoan()
+    this.returnsLogs=resp.filter((data:any)=>data.date==date)
+    this.getEmployees()
+    
   })
 
 }
