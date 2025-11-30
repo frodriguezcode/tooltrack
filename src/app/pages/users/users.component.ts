@@ -57,6 +57,8 @@ export class UsersComponent implements OnInit {
   titleDialog: string = '';
   UsuarioForm!: FormGroup;
   users: any = [];
+  usersBack: any = [];
+  idRol:string=''
   Date: any = new Date();
   icon!: IconProp;
   role_list: any = [];
@@ -116,8 +118,13 @@ export class UsersComponent implements OnInit {
   getUsers() {
     this.auth.getUsers().then((resp: any) => {
       this.users = resp;
+      this.usersBack=resp
       this.pin_list = this.users.map((user: any) => user.pin);
     });
+  }
+  filterByRol(){
+    console.log('idRol',this.idRol)
+    this.users=this.usersBack.filter((user:any)=>user.id_role==this.idRol)
   }
   verifyPin() {
     this.duplicate_pin =

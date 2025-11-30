@@ -17,6 +17,15 @@
   </div>
 
   <!-- Users Table -->
+  <p-select 
+  [options]="role_list" 
+  (onChange)="filterByRol()"
+  [(ngModel)]="this.idRol"
+  optionLabel="name" 
+  optionValue="id_rol"
+  binValue="id_rol"    
+  appendTo="body" [placeholder]="'users.form.rolePlaceholder' | translate" styleClass="w-full">
+  </p-select>
   <div class="table-container" *ngIf="users.length > 0">
     <p-table [value]="users" styleClass="custom-table" [tableStyle]="{'min-width': '50rem'}">
 
